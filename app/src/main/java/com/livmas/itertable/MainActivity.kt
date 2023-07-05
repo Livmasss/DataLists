@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.RecyclerAdapters.CollectionsAdapter
 import com.livmas.itertable.databinding.ActivityMainBinding
-import com.livmas.itertable.entities.CollectionElement
+import com.livmas.itertable.entities.CollectionItem
 import com.livmas.itertable.entities.CollectionType
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun FABClickListener() {
-        val elem = CollectionElement(number++.toString(), CollectionType.List)
+        val elem = CollectionItem(number++.toString(), CollectionType.List)
         adapter.addCollection(elem)
     }
 }

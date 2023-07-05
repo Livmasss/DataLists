@@ -4,8 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Livmas/AndroidStudioProjects/IterTable/app/src/main/res/layout/activity_main.xml" value="0.26927083333333335" />
-        <entry key="..\:/Users/Livmas/AndroidStudioProjects/IterTable/app/src/main/res/layout/collection_element.xml" value="0.26927083333333335" />
+        <entry key="..\:/Users/Livmas/AndroidStudioProjects/IterTable/app/src/main/res/layout/collection_element.xml" value="0.335" />
         <entry key="..\:/Users/Livmas/AndroidStudioProjects/IterTable/app/src/main/res/layout/collenction_element.xml" value="0.2682291666666667" />
+        <entry key="..\:/Users/Livmas/AndroidStudioProjects/IterTable/app/src/main/res/layout/list_item.xml" value="0.25" />
       </map>
     </option>
   </component>

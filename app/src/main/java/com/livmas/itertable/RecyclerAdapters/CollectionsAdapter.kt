@@ -5,18 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.R
-import com.livmas.itertable.databinding.CollectionElementBinding
-import com.livmas.itertable.entities.CollectionElement
-import kotlin.collections.ArrayList
+import com.livmas.itertable.databinding.CollectionItemBinding
+import com.livmas.itertable.entities.CollectionItem
 
 class CollectionsAdapter: RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
-    val dataSet = ArrayList<CollectionElement>()
+    private val dataSet = ArrayList<CollectionItem>()
     class CollectionHolder(item: View): RecyclerView.ViewHolder(item) {
-        val binding = CollectionElementBinding.bind(item)
-        fun bind(elem: CollectionElement) {
+        private val binding = CollectionItemBinding.bind(item)
+        fun bind(elem: CollectionItem) {
             binding.apply {
                 nameTextView.text = elem.name
                 typeTextView.text = elem.type.toString()
+                numberTextView.text = elem.number.toString()
             }
 
         }
@@ -24,7 +24,7 @@ class CollectionsAdapter: RecyclerView.Adapter<CollectionsAdapter.CollectionHold
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.collection_element, parent, false)
+        val view = inflater.inflate(R.layout.collection_item, parent, false)
         return CollectionHolder(view)
     }
 
@@ -36,7 +36,9 @@ class CollectionsAdapter: RecyclerView.Adapter<CollectionsAdapter.CollectionHold
         return dataSet.size
     }
 
-    fun addCollection(elem: CollectionElement) {
+    fun addCollection(elem: CollectionItem) {
+        elem.number = itemCount + 1
+
         dataSet.add(elem)
         notifyItemChanged(itemCount - 1)
     }
