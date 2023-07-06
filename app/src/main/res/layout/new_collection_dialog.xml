@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvListTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Collection Type:" />
+
+    <RadioGroup
+        android:id="@+id/rbGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RadioButton
+            android:id="@+id/rbList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/list" />
+
+        <RadioButton
+            android:id="@+id/rbCheckBoxList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/checkbox_list" />
+
+        <RadioButton
+            android:id="@+id/rbQueue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/queue" />
+
+        <RadioButton
+            android:id="@+id/rbStack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stack" />
+
+        <RadioButton
+            android:id="@+id/rbCycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cycle" />
+
+    </RadioGroup>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <EditText
+        android:id="@+id/etCollectionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Collection Name"
+        android:inputType="textPersonName" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <TextView
+        android:id="@+id/tvTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

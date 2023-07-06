@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.CollectionItemBinding
-import com.livmas.itertable.entities.CollectionItem
+import com.livmas.itertable.entities.items.CollectionItem
 
 class CollectionsAdapter: RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
     private val dataSet = ArrayList<CollectionItem>()
