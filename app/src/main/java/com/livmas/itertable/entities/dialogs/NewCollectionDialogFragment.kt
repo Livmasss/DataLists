@@ -3,16 +3,25 @@ package com.livmas.itertable.entities.dialogs
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import com.livmas.itertable.DataModel
 import com.livmas.itertable.R
+import com.livmas.itertable.databinding.NewCollectionDialogBinding
 import com.livmas.itertable.entities.CollectionType
 
 class NewCollectionDialogFragment: DialogFragment() {
+    private val dataModel: DataModel by activityViewModels()
+    lateinit var binding: NewCollectionDialogBinding
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        binding = NewCollectionDialogBinding.inflate(layoutInflater)
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             val inflater = it.layoutInflater
@@ -27,7 +36,9 @@ class NewCollectionDialogFragment: DialogFragment() {
                     val name = editText.text.toString()
                     val collType = readRadioGroup(radioGroup)
 
-                    view.findViewById<TextView>(R.id.tvTest).text = ("$name ${collType.toString()}")
+                    binding.tvTest.text = ("$name ${collType.toString()}")
+                    dataModel.collectionType.value = collType
+                    dataModel.collectionName.value = name
                 }
                 .setNegativeButton(R.string.cancel
                 ) { _, _ ->

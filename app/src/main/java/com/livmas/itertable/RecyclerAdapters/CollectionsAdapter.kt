@@ -1,24 +1,26 @@
 package com.livmas.itertable.RecyclerAdapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.CollectionItemBinding
+import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 
 class CollectionsAdapter: RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
     private val dataSet = ArrayList<CollectionItem>()
     class CollectionHolder(item: View): RecyclerView.ViewHolder(item) {
         private val binding = CollectionItemBinding.bind(item)
+
         fun bind(elem: CollectionItem) {
             binding.apply {
                 nameTextView.text = elem.name
                 typeTextView.text = elem.type.toString()
-                numberTextView.text = elem.number.toString()
+                numberTextView.text = (elem.id + 1).toString()
             }
-
         }
     }
 
@@ -37,9 +39,29 @@ class CollectionsAdapter: RecyclerView.Adapter<CollectionsAdapter.CollectionHold
     }
 
     fun addCollection(elem: CollectionItem) {
-        elem.number = itemCount + 1
+        elem.id = itemCount
 
         dataSet.add(elem)
-        notifyItemChanged(itemCount - 1)
+        notifyItemChanged(elem.id)
+    }
+
+    fun findItem(item: CollectionItem): Int {
+        for (i in 0 until dataSet.size) {
+            if (dataSet[i].id == item.id) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    fun at(id: Int): CollectionItem {
+        return dataSet[id]
+    }
+
+    fun setItemData(id: Int, name: String, type: CollectionType) {
+        dataSet[id].name = name
+        dataSet[id].type = type
+
+        notifyItemChanged(id)
     }
 }
