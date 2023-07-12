@@ -10,8 +10,8 @@ import com.livmas.itertable.databinding.CollectionItemBinding
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 
-class CollectionsAdapter: RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
-    private val dataSet = ArrayList<CollectionItem>()
+class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
+
     class CollectionHolder(item: View): RecyclerView.ViewHolder(item) {
         private val binding = CollectionItemBinding.bind(item)
 
@@ -58,7 +58,7 @@ class CollectionsAdapter: RecyclerView.Adapter<CollectionsAdapter.CollectionHold
         return dataSet[id]
     }
 
-    fun setItemData(id: Int, name: String, type: CollectionType) {
+    fun setItemData(id: Int, name: String, type: CollectionType, ) {
         dataSet[id].name = name
         dataSet[id].type = type
 

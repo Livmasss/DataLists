@@ -49,7 +49,7 @@ class NewCollectionDialogFragment: DialogFragment() {
     }
 
     private fun readRadioGroup(rbGroup: RadioGroup): CollectionType? {
-        return rbGroup.run {
+        rbGroup.run {
             if (checkedRadioButtonId == -1)
                 return null
 

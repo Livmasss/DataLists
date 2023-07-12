@@ -13,7 +13,7 @@ import com.livmas.itertable.entities.dialogs.NewCollectionDialogFragment
 class MainActivity : AppCompatActivity() {
     private val dataModel: DataModel by viewModels()
     lateinit var binding: ActivityMainBinding
-    val adapter = CollectionsAdapter()
+    val adapter = CollectionsAdapter(ArrayList())
     var number = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {

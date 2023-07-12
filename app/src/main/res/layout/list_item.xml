@@ -7,7 +7,7 @@
     android:gravity="center">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tvNumber"
         android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -15,15 +15,15 @@
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="15"
         android:text="List Element"
-        android:textSize="20sp"/>
+        android:textSize="25sp"/>
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/ibDelete"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
