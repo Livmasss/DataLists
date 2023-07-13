@@ -1,6 +1,5 @@
-package com.livmas.itertable.RecyclerAdapters
+package com.livmas.itertable.recyclerAdapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

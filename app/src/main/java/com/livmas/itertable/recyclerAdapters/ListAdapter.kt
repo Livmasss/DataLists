@@ -1,4 +1,4 @@
-package com.livmas.itertable.RecyclerAdapters
+package com.livmas.itertable.recyclerAdapters
 
 import android.view.LayoutInflater
 import android.view.View
