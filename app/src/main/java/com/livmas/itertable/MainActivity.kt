@@ -3,6 +3,7 @@ package com.livmas.itertable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.recyclerAdapters.CollectionsAdapter
 import com.livmas.itertable.databinding.ActivityMainBinding
@@ -26,9 +27,10 @@ class MainActivity : AppCompatActivity() {
         db = MainDB.getDB(this)
 
         initRecycler()
+        initAdapter()
         binding.FAB.setOnClickListener { FABClickListener() }
 
-        setObserver()
+        setAdapterObserver()
     }
 
     private fun initRecycler() {
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         adapter.addCollection(elem)
     }
 
-    private fun setObserver() {
+    private fun setAdapterObserver() {
         dataModel.collectionName.observe(this) { name ->
             val id = dataModel.collectionId.value ?: return@observe
             dataModel.collectionType.value?.let {
@@ -59,16 +61,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun initAdapter() {
+        Thread {
+            db.getDao().getAllColls().forEach { coll ->
+                var type = CollectionType.valueOf(coll.typeId)
+                if (type == null) {
+                    type = CollectionType.List
+                }
+                val item = CollectionItem(coll.name, type)
+                adapter.addCollection(item)
+            }
+        }.start()
+    }
+
     private fun insertDBTread() {
         Thread {
+            var type = dataModel.collectionType.value
+            if (type == null) {
+                type = CollectionType.List
+            }
             val dbItem = Colls(null,
                 dataModel.collectionName.value.orEmpty(),
-                dataModel.collectionType.value.toInt())
+                type.id)
             db.getDao().insertColl(dbItem)
         }.start()
     }
 
-    inline fun <reified T: Enum<T>> T?.toInt(): Int {
-        return this?.ordinal ?: 0
-    }
 }
