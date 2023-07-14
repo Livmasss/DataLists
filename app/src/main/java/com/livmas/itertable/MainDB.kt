@@ -4,10 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.livmas.itertable.entities.dataBaseEntities.CollElems
-import com.livmas.itertable.entities.dataBaseEntities.Colls
+import com.livmas.itertable.entities.items.CollectionItem
 
-@Database(entities = [Colls::class, CollElems::class], version = 1)
+@Database(entities = [CollectionItem::class], version = 5)
 abstract class MainDB: RoomDatabase() {
     abstract fun getDao(): Dao
     companion object {
@@ -16,7 +15,7 @@ abstract class MainDB: RoomDatabase() {
                 context.applicationContext,
                 MainDB::class.java,
                 "MainDB"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
         }
     }
 }

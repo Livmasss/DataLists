@@ -1,5 +1,6 @@
 package com.livmas.itertable.recyclerAdapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,12 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): Recycl
     class CollectionHolder(item: View): RecyclerView.ViewHolder(item) {
         private val binding = CollectionItemBinding.bind(item)
 
-        fun bind(elem: CollectionItem) {
+        @SuppressLint("SetTextI18n")
+        fun bind(elem: CollectionItem, pos: Int) {
             binding.apply {
                 nameTextView.text = elem.name
                 typeTextView.text = elem.type.toString()
-                numberTextView.text = (elem.id + 1).toString()
+                numberTextView.text = (pos + 1).toString()
             }
         }
     }
@@ -30,7 +32,7 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): Recycl
     }
 
     override fun onBindViewHolder(holder: CollectionHolder, position: Int) {
-        holder.bind(dataSet[position])
+        holder.bind(dataSet[position], position)
     }
 
     override fun getItemCount(): Int {
@@ -41,21 +43,21 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): Recycl
         elem.id = itemCount
 
         dataSet.add(elem)
-        notifyItemChanged(elem.id)
+        notifyItemChanged(dataSet.size - 1)
     }
 
-    fun findItem(item: CollectionItem): Int {
-        for (i in 0 until dataSet.size) {
-            if (dataSet[i].id == item.id) {
-                return i
-            }
-        }
-        return -1
-    }
-
-    fun at(id: Int): CollectionItem {
-        return dataSet[id]
-    }
+//    fun findItem(item: CollectionItem): Int {
+//        for (i in 0 until dataSet.size) {
+//            if (dataSet[i].id == item.id) {
+//                return i
+//            }
+//        }
+//        return -1
+//    }
+//
+//    fun at(id: Int): CollectionItem {
+//        return dataSet[id]
+//    }
 
     fun setItemData(id: Int, name: String, type: CollectionType, ) {
         dataSet[id].name = name
