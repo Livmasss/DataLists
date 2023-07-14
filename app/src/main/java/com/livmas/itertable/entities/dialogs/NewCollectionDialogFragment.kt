@@ -3,14 +3,12 @@ package com.livmas.itertable.entities.dialogs
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.NewCollectionDialogBinding
@@ -28,20 +26,25 @@ class NewCollectionDialogFragment: DialogFragment() {
 
             val view = inflater.inflate(R.layout.new_collection_dialog, null)
             builder.setView(view)
-                .setPositiveButton(R.string.confirm
-                ) { _, _ ->
+                .setPositiveButton(R.string.confirm) { _, _ ->
                     val editText = view.findViewById<EditText>(R.id.etCollectionName)
                     val radioGroup = view.findViewById<RadioGroup>(R.id.rbGroup)
 
                     val name = editText.text.toString()
                     val collType = readRadioGroup(radioGroup)
 
-                    binding.tvTest.text = ("$name ${collType.toString()}")
+                    if (isInputEmpty(name, collType)) {
+                        Toast.makeText(
+                            this.context,
+                            "You should enter collection type and name",
+                            Toast.LENGTH_SHORT).show()
+                        return@setPositiveButton
+                    }
+                    //Writes collection data in dataModel
                     dataModel.collectionType.value = collType
                     dataModel.collectionName.value = name
                 }
-                .setNegativeButton(R.string.cancel
-                ) { _, _ ->
+                .setNegativeButton(R.string.cancel) { _, _ ->
 
                 }
             builder.create()
@@ -67,4 +70,6 @@ class NewCollectionDialogFragment: DialogFragment() {
             }
         }
     }
+
+    private fun isInputEmpty(name: String, type: CollectionType?) = (name == "" || type == null)
 }

@@ -11,7 +11,6 @@ import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 
 class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
-
     class CollectionHolder(item: View): RecyclerView.ViewHolder(item) {
         private val binding = CollectionItemBinding.bind(item)
 
@@ -23,6 +22,9 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): Recycl
                 numberTextView.text = (pos + 1).toString()
             }
         }
+        fun getBinding(): CollectionItemBinding {
+            return binding
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionHolder {
@@ -33,6 +35,14 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): Recycl
 
     override fun onBindViewHolder(holder: CollectionHolder, position: Int) {
         holder.bind(dataSet[position], position)
+        holder.getBinding().ibDelete.setOnClickListener {
+
+
+            dataSet.removeAt(position)
+
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, dataSet.size)
+        }
     }
 
     override fun getItemCount(): Int {

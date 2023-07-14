@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         initAdapter()
         binding.FAB.setOnClickListener { FABClickListener() }
 
-        setAdapterObserver()
+        setDialogObserver()
     }
 
     private fun initRecycler() {
@@ -42,17 +42,16 @@ class MainActivity : AppCompatActivity() {
 
         val newCollectionDialogFragment = NewCollectionDialogFragment()
         newCollectionDialogFragment.show(supportFragmentManager, "collection")
-
-        val elem = CollectionItem(-1, "My collection", CollectionType.List)
-        print(dataModel.collectionType.value)
-        adapter.addCollection(elem)
+//
+//        val elem = CollectionItem(-1, "My collection", CollectionType.List)
+//        print(dataModel.collectionType.value)
     }
 
-    private fun setAdapterObserver() {
+    private fun setDialogObserver() {
         dataModel.collectionName.observe(this) { name ->
-            val id = dataModel.collectionId.value ?: return@observe
-            dataModel.collectionType.value?.let {
-                    type -> adapter.setItemData(id, name, type) }
+            dataModel.collectionType.value?.let { type ->
+                val item = CollectionItem(null, name, type)
+                adapter.addCollection(item) }
 
             insertDBTread()
         }
@@ -77,6 +76,12 @@ class MainActivity : AppCompatActivity() {
                 dataModel.collectionName.value.orEmpty(),
                 type)
             db.getDao().insertColl(item)
+        }.start()
+    }
+
+    private fun deleteDBThread(collection: CollectionItem) {
+        Thread {
+            db.getDao().deleteColl(collection)
         }.start()
     }
 }
