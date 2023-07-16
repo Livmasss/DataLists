@@ -1,16 +1,20 @@
 package com.livmas.itertable.recyclerAdapters
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.CollectionItemBinding
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 
-class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
+class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private val db: MainDB):
+    RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
+
     class CollectionHolder(item: View): RecyclerView.ViewHolder(item) {
         private val binding = CollectionItemBinding.bind(item)
 
@@ -37,7 +41,7 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): Recycl
         holder.bind(dataSet[position], position)
         holder.getBinding().ibDelete.setOnClickListener {
 
-
+            db.deleteThread(dataSet[position])
             dataSet.removeAt(position)
 
             notifyItemRemoved(position)
@@ -50,8 +54,6 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>): Recycl
     }
 
     fun addCollection(elem: CollectionItem) {
-        elem.id = itemCount
-
         dataSet.add(elem)
         notifyItemChanged(dataSet.size - 1)
     }

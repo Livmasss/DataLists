@@ -8,4 +8,6 @@
     <string name="stack">Stack</string>
     <string name="cycle">Cycle</string>
     <string name="checkbox_list">CheckBoxList</string>
+
+    <string name="enter_data_toast">You should enter collection type and name</string>
 </resources>

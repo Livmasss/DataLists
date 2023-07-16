@@ -36,7 +36,7 @@ class NewCollectionDialogFragment: DialogFragment() {
                     if (isInputEmpty(name, collType)) {
                         Toast.makeText(
                             this.context,
-                            "You should enter collection type and name",
+                            resources.getText(R.string.enter_data_toast),
                             Toast.LENGTH_SHORT).show()
                         return@setPositiveButton
                     }
