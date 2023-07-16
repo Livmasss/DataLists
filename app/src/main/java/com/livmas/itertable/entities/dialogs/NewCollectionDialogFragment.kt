@@ -26,7 +26,7 @@ class NewCollectionDialogFragment: DialogFragment() {
 
             val view = inflater.inflate(R.layout.new_collection_dialog, null)
             builder.setView(view)
-                .setPositiveButton(R.string.confirm) { _, _ ->
+                .setPositiveButton(R.string.create) { _, _ ->
                     val editText = view.findViewById<EditText>(R.id.etCollectionName)
                     val radioGroup = view.findViewById<RadioGroup>(R.id.rbGroup)
 

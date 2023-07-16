@@ -1,6 +1,5 @@
 package com.livmas.itertable
 
-import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -9,7 +8,6 @@ import com.livmas.itertable.recyclerAdapters.CollectionsAdapter
 import com.livmas.itertable.databinding.ActivityMainBinding
 import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.entities.dialogs.NewCollectionDialogFragment
-import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
     private val dataModel: DataModel by viewModels()
@@ -22,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
-        adapter = CollectionsAdapter(ArrayList(), db)
+        adapter = CollectionsAdapter(ArrayList(), db, this)
 
         initRecycler()
         initAdapter()

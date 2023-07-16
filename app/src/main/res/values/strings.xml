@@ -2,6 +2,7 @@
     <string name="app_name">IterTable</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="create">Create</string>
 
     <string name="list">List</string>
     <string name="queue">Queue</string>
@@ -9,5 +10,6 @@
     <string name="cycle">Cycle</string>
     <string name="checkbox_list">CheckBoxList</string>
 
-    <string name="enter_data_toast">You should enter collection type and name</string>
+    <string name="enter_data_toast">You should enter collection type and name!</string>
+    <string name="delete_message">Do you really want to delete this collection?</string>
 </resources>

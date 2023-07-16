@@ -1,6 +1,7 @@
 package com.livmas.itertable.recyclerAdapters
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.CollectionItemBinding
-import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 
-class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private val db: MainDB):
+class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private val db: MainDB, private val context: Context):
     RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
 
     class CollectionHolder(item: View): RecyclerView.ViewHolder(item) {
@@ -41,11 +41,20 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private
         holder.bind(dataSet[position], position)
         holder.getBinding().ibDelete.setOnClickListener {
 
-            db.deleteThread(dataSet[position])
-            dataSet.removeAt(position)
+            val deleteDialog = AlertDialog.Builder(context)
+                .setMessage(R.string.delete_message)
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    db.deleteThread(dataSet[position])
+                    dataSet.removeAt(position)
 
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, dataSet.size)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, dataSet.size)
+                }
+                .create()
+
+
+            deleteDialog.show()
         }
     }
 
@@ -71,10 +80,10 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private
 //        return dataSet[id]
 //    }
 
-    fun setItemData(id: Int, name: String, type: CollectionType, ) {
-        dataSet[id].name = name
-        dataSet[id].type = type
-
-        notifyItemChanged(id)
-    }
+//    fun setItemData(id: Int, name: String, type: CollectionType, ) {
+//        dataSet[id].name = name
+//        dataSet[id].type = type
+//
+//        notifyItemChanged(id)
+//    }
 }
