@@ -14,4 +14,5 @@ interface Dao {
     fun getAllColls(): List<CollectionItem>
     @Delete
     fun deleteColl(item: CollectionItem)
+//    @Query("SELECT * FROM ")
 }

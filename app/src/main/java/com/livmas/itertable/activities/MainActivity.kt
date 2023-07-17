@@ -1,22 +1,24 @@
-package com.livmas.itertable
+package com.livmas.itertable.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.livmas.itertable.DataModel
+import com.livmas.itertable.MainDB
+import com.livmas.itertable.databinding.ActivityCollectionBinding
 import com.livmas.itertable.recyclerAdapters.CollectionsAdapter
-import com.livmas.itertable.databinding.ActivityMainBinding
 import com.livmas.itertable.entities.items.CollectionItem
-import com.livmas.itertable.entities.dialogs.NewCollectionDialogFragment
+import com.livmas.itertable.dialogs.NewCollectionDialogFragment
 
 class MainActivity : AppCompatActivity() {
     private val dataModel: DataModel by viewModels()
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityCollectionBinding
     lateinit var db: MainDB
     lateinit var adapter: CollectionsAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityCollectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
@@ -24,20 +26,20 @@ class MainActivity : AppCompatActivity() {
 
         initRecycler()
         initAdapter()
-        binding.FAB.setOnClickListener { FABClickListener() }
+        binding.fbNewItem.setOnClickListener { FABClickListener() }
 
         setDialogObserver()
     }
 
     private fun initRecycler() {
-        binding.recyclerView.apply {
+        binding.rvContent.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = this@MainActivity.adapter
         }
     }
 
     private fun FABClickListener() {
-        dataModel.collectionId.value = adapter.itemCount
+        dataModel.collectionNumber.value = adapter.itemCount
 
         val newCollectionDialogFragment = NewCollectionDialogFragment()
         newCollectionDialogFragment.show(supportFragmentManager, "collection")
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.addCollection(item) }
 
             db.insertThread(dataModel)
+
         }
     }
 

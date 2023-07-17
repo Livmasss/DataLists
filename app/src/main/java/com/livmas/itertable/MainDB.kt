@@ -6,9 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
+import com.livmas.itertable.entities.items.ListItem
 import java.util.UUID
 
-@Database(entities = [CollectionItem::class], version = 6)
+@Database(entities = [CollectionItem::class, ListItem::class], version = 7)
 abstract class MainDB: RoomDatabase() {
     abstract fun getDao(): Dao
     companion object {

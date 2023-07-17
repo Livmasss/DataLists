@@ -1,4 +1,4 @@
-package com.livmas.itertable.entities.dialogs
+package com.livmas.itertable.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog

@@ -12,4 +12,5 @@
 
     <string name="enter_data_toast">You should enter collection type and name!</string>
     <string name="delete_message">Do you really want to delete this collection?</string>
+    <string name="collection_name">Collection Name:</string>
 </resources>

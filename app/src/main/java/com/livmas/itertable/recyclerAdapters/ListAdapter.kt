@@ -1,20 +1,24 @@
 package com.livmas.itertable.recyclerAdapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.R
+import com.livmas.itertable.activities.MainActivity
 import com.livmas.itertable.databinding.ListItemBinding
 import com.livmas.itertable.entities.items.ListItem
 
-class ListAdapter(private val dataSet: ArrayList<ListItem>): RecyclerView.Adapter<ListAdapter.ListHolder>() {
+class ListAdapter(private val dataSet: ArrayList<ListItem>):
+    RecyclerView.Adapter<ListAdapter.ListHolder>() {
     class ListHolder(view: View): RecyclerView.ViewHolder(view) {
         private val binding = ListItemBinding.bind(view)
 
-        fun bind(item: ListItem) {
+        @SuppressLint("SetTextI18n")
+        fun bind(item: ListItem, pos: Int) {
             binding.apply {
-                tvNumber.text = (item.id + 1).toString()
+                tvNumber.text = (pos + 1).toString()
                 tvName.text = item.name
             }
         }
@@ -31,13 +35,11 @@ class ListAdapter(private val dataSet: ArrayList<ListItem>): RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
-        holder.bind(dataSet[position])
+        holder.bind(dataSet[position], position)
     }
 
     fun add(item: ListItem) {
-        item.id = itemCount
-
         dataSet.add(item)
-        notifyItemChanged(item.id)
+        notifyItemChanged(itemCount - 1)
     }
 }

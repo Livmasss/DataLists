@@ -3,20 +3,24 @@ package com.livmas.itertable.recyclerAdapters
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
+import com.livmas.itertable.activities.ListActivity
 import com.livmas.itertable.databinding.CollectionItemBinding
+import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.items.CollectionItem
 
 class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private val db: MainDB, private val context: Context):
     RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
 
-    class CollectionHolder(item: View): RecyclerView.ViewHolder(item) {
-        private val binding = CollectionItemBinding.bind(item)
+    class CollectionHolder(view: View): RecyclerView.ViewHolder(view) {
+        private val binding = CollectionItemBinding.bind(view)
 
         @SuppressLint("SetTextI18n")
         fun bind(elem: CollectionItem, pos: Int) {
@@ -53,8 +57,11 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private
                 }
                 .create()
 
-
             deleteDialog.show()
+        }
+
+        holder.getBinding().nameTextView.setOnClickListener {
+            openList(dataSet[position])
         }
     }
 
@@ -69,21 +76,26 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private
 
 //    fun findItem(item: CollectionItem): Int {
 //        for (i in 0 until dataSet.size) {
-//            if (dataSet[i].id == item.id) {
+//            if (dataSet[i].number == item.number) {
 //                return i
 //            }
 //        }
 //        return -1
 //    }
 //
-//    fun at(id: Int): CollectionItem {
-//        return dataSet[id]
+//    fun at(number: Int): CollectionItem {
+//        return dataSet[number]
 //    }
 
-//    fun setItemData(id: Int, name: String, type: CollectionType, ) {
-//        dataSet[id].name = name
-//        dataSet[id].type = type
+//    fun setItemData(number: Int, name: String, type: CollectionType, ) {
+//        dataSet[number].name = name
+//        dataSet[number].type = type
 //
-//        notifyItemChanged(id)
+//        notifyItemChanged(number)
 //    }
+    private fun openList(list: CollectionItem) {
+        val intent = Intent(context, ListActivity::class.java)
+        intent.putExtra("collection", CollectionParcelable(list.id, list.name, list.type.ordinal))
+        startActivity(context, intent, null)
+    }
 }

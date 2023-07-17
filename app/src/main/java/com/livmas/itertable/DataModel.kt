@@ -12,7 +12,7 @@ open class DataModel: ViewModel() {
     val collectionType: MutableLiveData<CollectionType> by lazy {
         MutableLiveData<CollectionType>()
     }
-    val collectionId: MutableLiveData<Int> by lazy {
+    val collectionNumber: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()
     }
     val deletedColl: MutableLiveData<CollectionItem> by lazy {
