@@ -11,16 +11,23 @@ import com.livmas.itertable.databinding.ListItemBinding
 import com.livmas.itertable.entities.items.ListItem
 
 class ListAdapter(private val dataSet: ArrayList<ListItem>):
-    RecyclerView.Adapter<ListAdapter.ListHolder>() {
-    class ListHolder(view: View): RecyclerView.ViewHolder(view) {
+        RecyclerView.Adapter<ListAdapter.ListHolder>(),
+        Adapter<ListItem> {
+    class ListHolder(view: View):
+            RecyclerView.ViewHolder(view),
+            Adapter.Holder<ListItem, ListItemBinding> {
         private val binding = ListItemBinding.bind(view)
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: ListItem, pos: Int) {
+        override fun bind(item: ListItem, pos: Int) {
             binding.apply {
                 tvNumber.text = (pos + 1).toString()
                 tvName.text = item.name
             }
+        }
+
+        override fun getBinding(): ListItemBinding {
+            return binding
         }
     }
 
@@ -38,8 +45,12 @@ class ListAdapter(private val dataSet: ArrayList<ListItem>):
         holder.bind(dataSet[position], position)
     }
 
-    fun add(item: ListItem) {
+    override fun add(item: ListItem) {
         dataSet.add(item)
         notifyItemChanged(itemCount - 1)
+    }
+
+    override fun onDeleteClickListener(position: Int) {
+        TODO("Not yet implemented")
     }
 }

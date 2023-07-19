@@ -13,4 +13,5 @@
     <string name="enter_data_toast">You should enter collection type and name!</string>
     <string name="delete_message">Do you really want to delete this collection?</string>
     <string name="collection_name">Collection Name:</string>
+    <string name="new_list_dialog">Do you want to create new list?</string>
 </resources>

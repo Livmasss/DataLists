@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.entities.items.ListItem
-import java.util.UUID
 
 @Database(entities = [CollectionItem::class, ListItem::class], version = 7)
 abstract class MainDB: RoomDatabase() {
@@ -24,13 +23,13 @@ abstract class MainDB: RoomDatabase() {
 
     fun insertThread(dataModel: DataModel) {
         Thread {
-            var type = dataModel.collectionType.value
+            var type = dataModel.collType.value
             if (type == null) {
                 type = CollectionType.List
             }
             val item = CollectionItem(
                 null,
-                dataModel.collectionName.value.orEmpty(),
+                dataModel.collName.value.orEmpty(),
                 type)
             getDao().insertColl(item)
         }.start()

@@ -6,16 +6,17 @@ import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 
 open class DataModel: ViewModel() {
-    val collectionName: MutableLiveData<String> by lazy {
+    val collName: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
-    val collectionType: MutableLiveData<CollectionType> by lazy {
+    val collType: MutableLiveData<CollectionType> by lazy {
         MutableLiveData<CollectionType>()
     }
-    val collectionNumber: MutableLiveData<Int> by lazy {
+    val collNumber: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()
     }
-    val deletedColl: MutableLiveData<CollectionItem> by lazy {
-        MutableLiveData<CollectionItem>()
+
+    val listName: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
     }
 }

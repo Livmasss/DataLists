@@ -15,22 +15,27 @@ import com.livmas.itertable.activities.ListActivity
 import com.livmas.itertable.databinding.CollectionItemBinding
 import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.items.CollectionItem
+import java.util.ArrayList
 
-class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private val db: MainDB, private val context: Context):
-    RecyclerView.Adapter<CollectionsAdapter.CollectionHolder>() {
+class CollectionAdapter(private val db: MainDB, private val context: Context):
+        RecyclerView.Adapter<CollectionAdapter.CollectionHolder>(),
+        Adapter<CollectionItem> {
+    private val dataSet = ArrayList<CollectionItem>()
 
-    class CollectionHolder(view: View): RecyclerView.ViewHolder(view) {
+    class CollectionHolder(view: View):
+            RecyclerView.ViewHolder(view),
+            Adapter.Holder<CollectionItem, CollectionItemBinding> {
         private val binding = CollectionItemBinding.bind(view)
 
         @SuppressLint("SetTextI18n")
-        fun bind(elem: CollectionItem, pos: Int) {
+        override fun bind(item: CollectionItem, pos: Int) {
             binding.apply {
-                nameTextView.text = elem.name
-                typeTextView.text = elem.type.toString()
+                nameTextView.text = item.name
+                typeTextView.text = item.type.toString()
                 numberTextView.text = (pos + 1).toString()
             }
         }
-        fun getBinding(): CollectionItemBinding {
+        override fun getBinding(): CollectionItemBinding {
             return binding
         }
     }
@@ -49,11 +54,7 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private
                 .setMessage(R.string.delete_message)
                 .setNegativeButton(R.string.cancel) { _, _ -> }
                 .setPositiveButton(R.string.confirm) { _, _ ->
-                    db.deleteThread(dataSet[position])
-                    dataSet.removeAt(position)
-
-                    notifyItemRemoved(position)
-                    notifyItemRangeChanged(position, dataSet.size)
+                    onDeleteClickListener(position)
                 }
                 .create()
 
@@ -69,10 +70,25 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private
         return dataSet.size
     }
 
-    fun addCollection(elem: CollectionItem) {
-        dataSet.add(elem)
+    override fun add(item: CollectionItem) {
+        dataSet.add(item)
         notifyItemChanged(dataSet.size - 1)
     }
+
+    private fun openList(list: CollectionItem) {
+        val intent = Intent(context, ListActivity::class.java)
+        intent.putExtra("collection", CollectionParcelable(list.id, list.name, list.type.ordinal))
+        startActivity(context, intent, null)
+    }
+
+    override fun onDeleteClickListener(position: Int) {
+        db.deleteThread(dataSet[position])
+        dataSet.removeAt(position)
+
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, dataSet.size)
+    }
+
 
 //    fun findItem(item: CollectionItem): Int {
 //        for (i in 0 until dataSet.size) {
@@ -82,9 +98,30 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private
 //        }
 //        return -1
 //    }
+
+//    fun at(position: Int): CollectionItem {
+//        val iter = dataSet.iterator()
+//        var index = 0
+//        while (iter.hasNext()) {
+//            val item = iter.next()
+//            if (index == position)
+//                return item
+//            index++
+//        }
+//        throw IndexOutOfBoundsException()
+//    }
 //
-//    fun at(number: Int): CollectionItem {
-//        return dataSet[number]
+//    fun removeAt(position: Int) {
+//        val iterator = dataSet.iterator()
+//        var index = 0
+//        while (iterator.hasNext()) {
+//            iterator.next()
+//            if (position == index) {
+//                iterator.remove()
+//                return
+//            }
+//            index++
+//        }
 //    }
 
 //    fun setItemData(number: Int, name: String, type: CollectionType, ) {
@@ -93,9 +130,4 @@ class CollectionsAdapter(private val dataSet: ArrayList<CollectionItem>, private
 //
 //        notifyItemChanged(number)
 //    }
-    private fun openList(list: CollectionItem) {
-        val intent = Intent(context, ListActivity::class.java)
-        intent.putExtra("collection", CollectionParcelable(list.id, list.name, list.type.ordinal))
-        startActivity(context, intent, null)
-    }
 }

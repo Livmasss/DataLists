@@ -53,12 +53,4 @@
         android:hint="Collection Name"
         android:inputType="textPersonName" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-
-    <TextView
-        android:id="@+id/tvTest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </LinearLayout>

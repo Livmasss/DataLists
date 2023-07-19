@@ -2,30 +2,32 @@ package com.livmas.itertable.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.databinding.ActivityCollectionBinding
-import com.livmas.itertable.recyclerAdapters.CollectionsAdapter
+import com.livmas.itertable.recyclerAdapters.CollectionAdapter
 import com.livmas.itertable.entities.items.CollectionItem
-import com.livmas.itertable.dialogs.NewCollectionDialogFragment
+import com.livmas.itertable.dialogs.NewCollectionDialog
 
 class MainActivity : AppCompatActivity() {
     private val dataModel: DataModel by viewModels()
     private lateinit var binding: ActivityCollectionBinding
     lateinit var db: MainDB
-    lateinit var adapter: CollectionsAdapter
+    lateinit var adapter: CollectionAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCollectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
-        adapter = CollectionsAdapter(ArrayList(), db, this)
+        adapter = CollectionAdapter(db, this)
 
         initRecycler()
         initAdapter()
+        binding.tvType.visibility = View.GONE
         binding.fbNewItem.setOnClickListener { FABClickListener() }
 
         setDialogObserver()
@@ -39,20 +41,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun FABClickListener() {
-        dataModel.collectionNumber.value = adapter.itemCount
+        dataModel.collNumber.value = adapter.itemCount
 
-        val newCollectionDialogFragment = NewCollectionDialogFragment()
-        newCollectionDialogFragment.show(supportFragmentManager, "collection")
+        val newCollectionDialog = NewCollectionDialog()
+        newCollectionDialog.show(supportFragmentManager, "collection")
 //
 //        val elem = CollectionItem(-1, "My collection", CollectionType.List)
 //        print(dataModel.collectionType.value)
     }
 
     private fun setDialogObserver() {
-        dataModel.collectionName.observe(this) { name ->
-            dataModel.collectionType.value?.let { type ->
+        dataModel.collName.observe(this) { name ->
+            dataModel.collType.value?.let { type ->
                 val item = CollectionItem(null, name, type)
-                adapter.addCollection(item) }
+                adapter.add(item) }
 
             db.insertThread(dataModel)
 
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     private fun initAdapter() {
         Thread {
             db.getDao().getAllColls().forEach { coll ->
-                adapter.addCollection(coll)
+                adapter.add(coll)
             }
         }.start()
     }
