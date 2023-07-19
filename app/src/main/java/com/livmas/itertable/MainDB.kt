@@ -21,7 +21,7 @@ abstract class MainDB: RoomDatabase() {
         }
     }
 
-    fun insertThread(dataModel: DataModel) {
+    fun insertCollectionFromDataModel(dataModel: DataModel) {
         Thread {
             var type = dataModel.collType.value
             if (type == null) {
@@ -35,9 +35,15 @@ abstract class MainDB: RoomDatabase() {
         }.start()
     }
 
-    fun deleteThread(collection: CollectionItem) {
+    fun deleteCollection(collection: CollectionItem) {
         Thread {
             getDao().deleteColl(collection)
+        }.start()
+    }
+
+    fun deleteItem(item: ListItem) {
+        Thread {
+            getDao().deleteItem(item)
         }.start()
     }
 }

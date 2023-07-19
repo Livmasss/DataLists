@@ -1,18 +1,21 @@
 package com.livmas.itertable.recyclerAdapters
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
-import com.livmas.itertable.activities.MainActivity
 import com.livmas.itertable.databinding.ListItemBinding
 import com.livmas.itertable.entities.items.ListItem
 
-class ListAdapter(private val dataSet: ArrayList<ListItem>):
+class ListAdapter(private val dataSet: ArrayList<ListItem>, private val context: Context):
         RecyclerView.Adapter<ListAdapter.ListHolder>(),
         Adapter<ListItem> {
+    private val db = MainDB.getDB(context)
     class ListHolder(view: View):
             RecyclerView.ViewHolder(view),
             Adapter.Holder<ListItem, ListItemBinding> {
@@ -43,6 +46,17 @@ class ListAdapter(private val dataSet: ArrayList<ListItem>):
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
         holder.bind(dataSet[position], position)
+        holder.getBinding().ibDelete.setOnClickListener {
+            val dialog = AlertDialog.Builder(context)
+                .setMessage(R.string.delete_message)
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    onDeleteClickListener(position)
+                }
+                .create()
+
+            dialog.show()
+        }
     }
 
     override fun add(item: ListItem) {
@@ -51,6 +65,10 @@ class ListAdapter(private val dataSet: ArrayList<ListItem>):
     }
 
     override fun onDeleteClickListener(position: Int) {
-        TODO("Not yet implemented")
+        db.deleteItem(dataSet[position])
+        dataSet.removeAt(position)
+
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, itemCount)
     }
 }

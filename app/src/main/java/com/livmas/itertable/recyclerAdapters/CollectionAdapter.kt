@@ -82,7 +82,7 @@ class CollectionAdapter(private val db: MainDB, private val context: Context):
     }
 
     override fun onDeleteClickListener(position: Int) {
-        db.deleteThread(dataSet[position])
+        db.deleteCollection(dataSet[position])
         dataSet.removeAt(position)
 
         notifyItemRemoved(position)

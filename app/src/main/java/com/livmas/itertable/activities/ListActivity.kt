@@ -28,16 +28,23 @@ class ListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
-        adapter = ListAdapter(ArrayList<ListItem>())
+        adapter = ListAdapter(ArrayList<ListItem>(), this)
         collInfo = intent.getParcelableExtra("collection")!!
 
-        binding.tvTitle.text = collInfo.name + ":"
-        binding.tvType.text = CollectionType.valueOf(collInfo.typeId).toString()
-        binding.fbNewItem.setOnClickListener {
-            startNewListDialog()
+        binding.apply {
+            tvTitle.text = collInfo.name + ":"
+            tvType.text = CollectionType.valueOf(collInfo.typeId).toString()
+
+            fbNewItem.setOnClickListener {
+                startNewListDialog()
+            }
+            bBack.setOnClickListener {
+                finish()
+            }
         }
 
         initRecycler()
+        initList()
 
         setNewListDialogObserver()
     }
@@ -46,7 +53,6 @@ class ListActivity : AppCompatActivity() {
         binding.rvContent.apply {
             layoutManager = LinearLayoutManager(this@ListActivity)
             adapter = this@ListActivity.adapter
-
         }
     }
 
@@ -63,7 +69,19 @@ class ListActivity : AppCompatActivity() {
 
             if (item != null) {
                 adapter.add(item)
+                Thread {
+                    db.getDao().insertItem(item)
+                }.start()
             }
         }
+    }
+
+    private fun initList() {
+        Thread {
+            val data = db.getDao().getCollectionItems(collInfo.id!!)
+            data.forEach { item ->
+                adapter.add(item)
+            }
+        }.start()
     }
 }

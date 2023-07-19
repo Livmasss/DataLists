@@ -27,8 +27,12 @@ class MainActivity : AppCompatActivity() {
 
         initRecycler()
         initAdapter()
-        binding.tvType.visibility = View.GONE
-        binding.fbNewItem.setOnClickListener { FABClickListener() }
+        binding.apply {
+            tvType.visibility = View.GONE
+            bBack.visibility = View.GONE
+            fbNewItem.setOnClickListener { FABClickListener() }
+        }
+
 
         setDialogObserver()
     }
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 val item = CollectionItem(null, name, type)
                 adapter.add(item) }
 
-            db.insertThread(dataModel)
+            db.insertCollectionFromDataModel(dataModel)
 
         }
     }
