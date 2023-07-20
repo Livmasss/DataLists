@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.databinding.ActivityCollectionBinding
+import com.livmas.itertable.dialogs.EditItemDialog
 import com.livmas.itertable.recyclerAdapters.CollectionAdapter
 import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.dialogs.NewCollectionDialog
@@ -23,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
-        adapter = CollectionAdapter(db, this)
+        adapter = CollectionAdapter(db, this, dataModel)
 
         initRecycler()
         initAdapter()
@@ -39,29 +42,40 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecycler() {
         binding.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
             adapter = this@MainActivity.adapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@MainActivity,
+                    LinearLayoutManager.VERTICAL)
+            )
         }
     }
 
     private fun FABClickListener() {
-        dataModel.collNumber.value = adapter.itemCount
-
         val newCollectionDialog = NewCollectionDialog()
         newCollectionDialog.show(supportFragmentManager, "collection")
-//
-//        val elem = CollectionItem(-1, "My collection", CollectionType.List)
-//        print(dataModel.collectionType.value)
     }
 
     private fun setDialogObserver() {
-        dataModel.collName.observe(this) { name ->
-            dataModel.collType.value?.let { type ->
+        dataModel.newCollName.observe(this) { name ->
+            dataModel.newCollType.value?.let { type ->
                 val item = CollectionItem(null, name, type)
                 adapter.add(item) }
 
             db.insertCollectionFromDataModel(dataModel)
+        }
 
+        dataModel.editItemIndex.observe(this) {
+            val dialog = EditItemDialog()
+            dialog.show(supportFragmentManager, "collection")
+        }
+
+        dataModel.editItemName.observe(this) {name ->
+            adapter.setItemData(
+                dataModel.editItemIndex.value!!,
+                name
+            )
         }
     }
 
@@ -71,5 +85,9 @@ class MainActivity : AppCompatActivity() {
                 adapter.add(coll)
             }
         }.start()
+    }
+
+    fun getSupFragmentManager(): FragmentManager {
+        return supportFragmentManager
     }
 }

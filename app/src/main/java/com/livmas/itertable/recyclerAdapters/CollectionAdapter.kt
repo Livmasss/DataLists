@@ -8,16 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
 import com.livmas.itertable.activities.ListActivity
 import com.livmas.itertable.databinding.CollectionItemBinding
+import com.livmas.itertable.dialogs.EditItemDialog
 import com.livmas.itertable.entities.CollectionParcelable
+import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 import java.util.ArrayList
 
-class CollectionAdapter(private val db: MainDB, private val context: Context):
+class CollectionAdapter(private val db: MainDB, private val context: Context,
+                        private val dataModel: DataModel):
         RecyclerView.Adapter<CollectionAdapter.CollectionHolder>(),
         Adapter<CollectionItem> {
     private val dataSet = ArrayList<CollectionItem>()
@@ -30,9 +35,9 @@ class CollectionAdapter(private val db: MainDB, private val context: Context):
         @SuppressLint("SetTextI18n")
         override fun bind(item: CollectionItem, pos: Int) {
             binding.apply {
-                nameTextView.text = item.name
-                typeTextView.text = item.type.toString()
-                numberTextView.text = (pos + 1).toString()
+                tvName.text = item.name
+                tvType.text = item.type.toString()
+                tvNumber.text = (pos + 1).toString()
             }
         }
         override fun getBinding(): CollectionItemBinding {
@@ -61,8 +66,13 @@ class CollectionAdapter(private val db: MainDB, private val context: Context):
             deleteDialog.show()
         }
 
-        holder.getBinding().nameTextView.setOnClickListener {
+        holder.getBinding().root.setOnClickListener {
             openList(dataSet[position])
+        }
+
+        holder.getBinding().root.setOnLongClickListener {
+            dataModel.editItemIndex.value = position
+            return@setOnLongClickListener true
         }
     }
 
@@ -124,10 +134,13 @@ class CollectionAdapter(private val db: MainDB, private val context: Context):
 //        }
 //    }
 
-//    fun setItemData(number: Int, name: String, type: CollectionType, ) {
-//        dataSet[number].name = name
-//        dataSet[number].type = type
-//
-//        notifyItemChanged(number)
-//    }
+    fun setItemData(position: Int, name: String) {
+        dataSet[position].name = name
+
+        notifyItemChanged(position)
+    }
+
+    fun editCollection() {
+
+    }
 }

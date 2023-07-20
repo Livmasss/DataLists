@@ -3,7 +3,6 @@ package com.livmas.itertable.dialogs
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -35,8 +34,8 @@ class NewCollectionDialog: DialogFragment() {
                     return@setPositiveButton
                 }
                 //Writes collection data in dataModel
-                dataModel.collType.value = collType
-                dataModel.collName.value = name
+                dataModel.newCollType.value = collType
+                dataModel.newCollName.value = name
             }
             .setNegativeButton(R.string.cancel) { _, _ ->
 

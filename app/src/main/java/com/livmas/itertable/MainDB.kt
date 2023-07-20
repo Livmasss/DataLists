@@ -23,13 +23,13 @@ abstract class MainDB: RoomDatabase() {
 
     fun insertCollectionFromDataModel(dataModel: DataModel) {
         Thread {
-            var type = dataModel.collType.value
+            var type = dataModel.newCollType.value
             if (type == null) {
                 type = CollectionType.List
             }
             val item = CollectionItem(
                 null,
-                dataModel.collName.value.orEmpty(),
+                dataModel.newCollName.value.orEmpty(),
                 type)
             getDao().insertColl(item)
         }.start()

@@ -3,6 +3,7 @@ package com.livmas.itertable.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
@@ -53,6 +54,11 @@ class ListActivity : AppCompatActivity() {
         binding.rvContent.apply {
             layoutManager = LinearLayoutManager(this@ListActivity)
             adapter = this@ListActivity.adapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@ListActivity,
+                    LinearLayoutManager.VERTICAL)
+            )
         }
     }
 
@@ -62,7 +68,7 @@ class ListActivity : AppCompatActivity() {
     }
 
     private fun setNewListDialogObserver() {
-        dataModel.listName.observe(this) {name ->
+        dataModel.newListName.observe(this) { name ->
             val item = collInfo.id?.let { masterId ->
                 ListItem(null, name, masterId)
             }
