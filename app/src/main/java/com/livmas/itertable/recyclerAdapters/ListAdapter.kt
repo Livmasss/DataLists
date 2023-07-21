@@ -7,12 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ListItemBinding
 import com.livmas.itertable.entities.items.ListItem
 
-class ListAdapter(private val dataSet: ArrayList<ListItem>, private val context: Context):
+class ListAdapter(private val dataSet: ArrayList<ListItem>, private val context: Context, private val dataModel: DataModel):
         RecyclerView.Adapter<ListAdapter.ListHolder>(),
         Adapter<ListItem> {
     private val db = MainDB.getDB(context)
@@ -57,6 +58,10 @@ class ListAdapter(private val dataSet: ArrayList<ListItem>, private val context:
 
             dialog.show()
         }
+        holder.getBinding().root.setOnLongClickListener {
+            dataModel.editItemIndex.value = position
+            return@setOnLongClickListener true
+        }
     }
 
     override fun add(item: ListItem) {
@@ -70,5 +75,11 @@ class ListAdapter(private val dataSet: ArrayList<ListItem>, private val context:
 
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, itemCount)
+    }
+
+    fun setItemData(position: Int, name: String) {
+        dataSet[position].name = name
+
+        notifyItemChanged(position)
     }
 }

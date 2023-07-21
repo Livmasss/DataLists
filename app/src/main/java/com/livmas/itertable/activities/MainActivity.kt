@@ -58,22 +58,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setDialogObserver() {
+        lateinit var item: CollectionItem
         dataModel.newCollName.observe(this) { name ->
             dataModel.newCollType.value?.let { type ->
-                val item = CollectionItem(null, name, type)
+                item = CollectionItem(null, name, type)
                 adapter.add(item) }
 
-            db.insertCollectionFromDataModel(dataModel)
+            Thread {
+                val id = db.insertCollectionFromDataModel(dataModel)
+                item.id = id.toInt()
+
+                adapter.openList(item)
+            }.start()
         }
 
-        dataModel.editItemIndex.observe(this) {
-            val dialog = EditItemDialog()
+        dataModel.editCollIndex.observe(this) {
+            val dialog = EditItemDialog(dataModel.editCollName)
             dialog.show(supportFragmentManager, "collection")
         }
 
-        dataModel.editItemName.observe(this) {name ->
+        dataModel.editCollName.observe(this) { name ->
             adapter.setItemData(
-                dataModel.editItemIndex.value!!,
+                dataModel.editCollIndex.value!!,
                 name
             )
         }

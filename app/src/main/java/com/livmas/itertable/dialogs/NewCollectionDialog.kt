@@ -21,7 +21,9 @@ class NewCollectionDialog: DialogFragment() {
         binding = CollectionInputDialogBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(activity)
 
-        builder.setView(binding.root)
+        builder
+            .setView(binding.root)
+            .setMessage(R.string.new_coll_dialog)
             .setPositiveButton(R.string.create) { _, _ ->
                 val name = binding.etCollectionName.text.toString()
                 val collType = readRadioGroup(binding.rbGroup)

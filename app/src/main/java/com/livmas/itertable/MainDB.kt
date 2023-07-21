@@ -21,18 +21,16 @@ abstract class MainDB: RoomDatabase() {
         }
     }
 
-    fun insertCollectionFromDataModel(dataModel: DataModel) {
-        Thread {
-            var type = dataModel.newCollType.value
-            if (type == null) {
-                type = CollectionType.List
-            }
-            val item = CollectionItem(
-                null,
-                dataModel.newCollName.value.orEmpty(),
-                type)
-            getDao().insertColl(item)
-        }.start()
+    fun insertCollectionFromDataModel(dataModel: DataModel): Long {
+        var type = dataModel.newCollType.value
+        if (type == null) {
+            type = CollectionType.List
+        }
+        val item = CollectionItem(
+            null,
+            dataModel.newCollName.value.orEmpty(),
+            type)
+        return getDao().insertColl(item)
     }
 
     fun deleteCollection(collection: CollectionItem) {

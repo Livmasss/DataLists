@@ -16,8 +16,14 @@ open class DataModel: ViewModel() {
         MutableLiveData<String>()
     }
 
+    val editCollIndex: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
     val editItemIndex: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()
+    }
+    val editCollName: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
     }
     val editItemName: MutableLiveData<String> by lazy {
         MutableLiveData<String>()

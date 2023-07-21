@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.databinding.ActivityCollectionBinding
+import com.livmas.itertable.dialogs.EditItemDialog
 import com.livmas.itertable.dialogs.NewListDialog
 import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.CollectionType
@@ -29,7 +30,7 @@ class ListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
-        adapter = ListAdapter(ArrayList<ListItem>(), this)
+        adapter = ListAdapter(ArrayList<ListItem>(), this, dataModel)
         collInfo = intent.getParcelableExtra("collection")!!
 
         binding.apply {
@@ -47,7 +48,7 @@ class ListActivity : AppCompatActivity() {
         initRecycler()
         initList()
 
-        setNewListDialogObserver()
+        setObservers()
     }
 
     private fun initRecycler() {
@@ -67,7 +68,7 @@ class ListActivity : AppCompatActivity() {
         dialog.show(supportFragmentManager, "list")
     }
 
-    private fun setNewListDialogObserver() {
+    private fun setObservers() {
         dataModel.newListName.observe(this) { name ->
             val item = collInfo.id?.let { masterId ->
                 ListItem(null, name, masterId)
@@ -79,6 +80,17 @@ class ListActivity : AppCompatActivity() {
                     db.getDao().insertItem(item)
                 }.start()
             }
+        }
+
+        dataModel.editItemIndex.observe(this) {
+            val dialog = EditItemDialog(dataModel.editItemName)
+            dialog.show(supportFragmentManager, "item")
+        }
+
+        dataModel.editItemName.observe(this) { name ->
+            adapter.setItemData(
+                dataModel.editItemIndex.value!!,
+                name)
         }
     }
 

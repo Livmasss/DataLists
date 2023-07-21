@@ -19,6 +19,7 @@ class NewListDialog: DialogFragment() {
         val builder = AlertDialog.Builder(activity)
 
         builder.setView(binding.root)
+            .setMessage(R.string.new_item_dialog)
             .setNegativeButton(R.string.cancel) { _, _ ->
 
             }
@@ -26,7 +27,6 @@ class NewListDialog: DialogFragment() {
                 val input = binding.etName.text.toString()
                 dataModel.newListName.value = input
             }
-            .setMessage(R.string.new_list_dialog)
 
         return builder.create()
     }

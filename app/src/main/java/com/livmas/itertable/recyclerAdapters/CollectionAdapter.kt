@@ -8,16 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
 import com.livmas.itertable.activities.ListActivity
 import com.livmas.itertable.databinding.CollectionItemBinding
-import com.livmas.itertable.dialogs.EditItemDialog
 import com.livmas.itertable.entities.CollectionParcelable
-import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 import java.util.ArrayList
 
@@ -71,7 +68,7 @@ class CollectionAdapter(private val db: MainDB, private val context: Context,
         }
 
         holder.getBinding().root.setOnLongClickListener {
-            dataModel.editItemIndex.value = position
+            dataModel.editCollIndex.value = position
             return@setOnLongClickListener true
         }
     }
@@ -85,7 +82,7 @@ class CollectionAdapter(private val db: MainDB, private val context: Context,
         notifyItemChanged(dataSet.size - 1)
     }
 
-    private fun openList(list: CollectionItem) {
+    fun openList(list: CollectionItem) {
         val intent = Intent(context, ListActivity::class.java)
         intent.putExtra("collection", CollectionParcelable(list.id, list.name, list.type.ordinal))
         startActivity(context, intent, null)
@@ -138,9 +135,5 @@ class CollectionAdapter(private val db: MainDB, private val context: Context,
         dataSet[position].name = name
 
         notifyItemChanged(position)
-    }
-
-    fun editCollection() {
-
     }
 }

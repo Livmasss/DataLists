@@ -13,6 +13,8 @@
 
     <string name="enter_data_toast">You should enter collection type and name!</string>
     <string name="delete_message">Do you really want to delete this collection?</string>
-    <string name="collection_name">Collection Name:</string>
-    <string name="new_list_dialog">Do you want to create new list?</string>
+    <string name="collection_name">Your collections:</string>
+    <string name="new_item_dialog">Create new item</string>
+    <string name="new_coll_dialog">Create new collection</string>
+    <string name="edit_coll_dialog">Rename</string>
 </resources>
