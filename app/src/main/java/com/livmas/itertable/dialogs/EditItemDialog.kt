@@ -4,18 +4,16 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
-import com.livmas.itertable.DataModel
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.EditDialogBinding
 
-class EditItemDialog(private val liveData: MutableLiveData<String>): DialogFragment() {
+class EditItemDialog(private val liveData: MutableLiveData<String>, private val oldName: String): DialogFragment() {
     private lateinit var binding: EditDialogBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = EditDialogBinding.inflate(layoutInflater)
+        binding.etName.setText(oldName)
         return AlertDialog.Builder(context)
             .setView(binding.root)
             .setMessage(R.string.edit_coll_dialog)

@@ -106,17 +106,9 @@ class CollectionAdapter(private val db: MainDB, private val context: Context,
 //        return -1
 //    }
 
-//    fun at(position: Int): CollectionItem {
-//        val iter = dataSet.iterator()
-//        var index = 0
-//        while (iter.hasNext()) {
-//            val item = iter.next()
-//            if (index == position)
-//                return item
-//            index++
-//        }
-//        throw IndexOutOfBoundsException()
-//    }
+    fun at(position: Int): CollectionItem {
+        return dataSet[position]
+    }
 //
 //    fun removeAt(position: Int) {
 //        val iterator = dataSet.iterator()

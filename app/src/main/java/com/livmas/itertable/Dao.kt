@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.entities.items.ListItem
 
@@ -21,4 +22,8 @@ interface Dao {
     fun deleteColl(item: CollectionItem)
     @Delete
     fun deleteItem(item: ListItem)
+    @Update
+    fun updateColl(item: CollectionItem)
+    @Update
+    fun updateItem(item: ListItem)
 }

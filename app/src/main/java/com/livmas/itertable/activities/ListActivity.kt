@@ -83,14 +83,16 @@ class ListActivity : AppCompatActivity() {
         }
 
         dataModel.editItemIndex.observe(this) {
-            val dialog = EditItemDialog(dataModel.editItemName)
+            val dialog = EditItemDialog(dataModel.editItemName, adapter.at(it).name)
             dialog.show(supportFragmentManager, "item")
         }
 
         dataModel.editItemName.observe(this) { name ->
-            adapter.setItemData(
-                dataModel.editItemIndex.value!!,
-                name)
+            val index = dataModel.editItemIndex.value!!
+            adapter.setItemData(index, name)
+            Thread{
+                db.getDao().updateItem(adapter.at(index))
+            }.start()
         }
     }
 

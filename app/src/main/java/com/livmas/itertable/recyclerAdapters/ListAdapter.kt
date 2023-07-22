@@ -79,7 +79,10 @@ class ListAdapter(private val dataSet: ArrayList<ListItem>, private val context:
 
     fun setItemData(position: Int, name: String) {
         dataSet[position].name = name
-
         notifyItemChanged(position)
+    }
+
+    fun at(position: Int): ListItem {
+        return dataSet[position]
     }
 }

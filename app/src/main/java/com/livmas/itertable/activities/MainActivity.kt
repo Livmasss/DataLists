@@ -73,15 +73,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         dataModel.editCollIndex.observe(this) {
-            val dialog = EditItemDialog(dataModel.editCollName)
+            val dialog = EditItemDialog(dataModel.editCollName, adapter.at(it).name)
             dialog.show(supportFragmentManager, "collection")
         }
 
         dataModel.editCollName.observe(this) { name ->
-            adapter.setItemData(
-                dataModel.editCollIndex.value!!,
-                name
-            )
+                val index = dataModel.editCollIndex.value!!
+                adapter.setItemData(index, name)
+            Thread {
+                db.getDao().updateColl(adapter.at(index))
+            }.start()
         }
     }
 
@@ -91,9 +92,5 @@ class MainActivity : AppCompatActivity() {
                 adapter.add(coll)
             }
         }.start()
-    }
-
-    fun getSupFragmentManager(): FragmentManager {
-        return supportFragmentManager
     }
 }
