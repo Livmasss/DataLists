@@ -1,7 +1,8 @@
-package com.livmas.itertable.activities
+package com.livmas.itertable.activities.collectionActivities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,13 +14,14 @@ import com.livmas.itertable.dialogs.NewListDialog
 import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.ListItem
-import com.livmas.itertable.recyclerAdapters.QueueAdapter
+import com.livmas.itertable.recyclerAdapters.collections.StackAdapter
 
-class QueueActivity : AppCompatActivity() {
+class StackActivity : AppCompatActivity() {
+
     private val dataModel: DataModel by viewModels()
     private lateinit var binding: ActivityComplexCollectionBinding
     private lateinit var db: MainDB
-    private lateinit var adapter: QueueAdapter
+    private lateinit var adapter: StackAdapter
     private lateinit var collInfo: CollectionParcelable
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +31,7 @@ class QueueActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
-        adapter = QueueAdapter(this, dataModel)
+        adapter = StackAdapter(this, dataModel)
         collInfo = intent.getParcelableExtra("collection")!!
 
         binding.apply {
@@ -42,6 +44,10 @@ class QueueActivity : AppCompatActivity() {
             bBack.setOnClickListener {
                 finish()
             }
+            bPop.setOnClickListener {
+                val item = adapter.pop()
+                Toast.makeText(this@StackActivity, item.name, Toast.LENGTH_SHORT).show()
+            }
         }
 
         initRecycler()
@@ -51,15 +57,15 @@ class QueueActivity : AppCompatActivity() {
     }
 
 
-    fun startNewListDialog() {
+    private fun startNewListDialog() {
         val dialog = NewListDialog()
         dialog.show(supportFragmentManager, "list")
     }
 
-    fun setObservers() {
+    private fun setObservers() {
         dataModel.newListName.observe(this) { name ->
             val item = collInfo.id?.let { masterId ->
-                ListItem(null, name, masterId)
+                ListItem(null, name, masterId, adapter.itemCount + 1)
             }
 
             if (item != null) {
@@ -86,11 +92,11 @@ class QueueActivity : AppCompatActivity() {
 
     private fun initRecycler() {
         binding.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@QueueActivity)
-            adapter = this@QueueActivity.adapter
+            layoutManager = LinearLayoutManager(this@StackActivity)
+            adapter = this@StackActivity.adapter
             addItemDecoration(
                 DividerItemDecoration(
-                    this@QueueActivity,
+                    this@StackActivity,
                     LinearLayoutManager.VERTICAL)
             )
         }
@@ -98,8 +104,14 @@ class QueueActivity : AppCompatActivity() {
 
     private fun initList() {
         Thread {
-            val data = db.getDao().getCollectionItems(collInfo.id!!)
+            val data = db.getDao().getCollItems(collInfo.id!!)
             data.forEach { item ->
+                if (item.number == 0) {
+                    item.number = adapter.itemCount + 1
+                    Thread {
+                        db.getDao().updateItem(item)
+                    }.start()
+                }
                 adapter.add(item)
             }
         }.start()

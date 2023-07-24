@@ -69,13 +69,13 @@ android:backgroundTint="@color/design_default_color_on_primary">
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-<Button
-    android:id="@+id/bPop"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="@string/pop"
-    app:layout_constraintEnd_toEndOf="@+id/bBack"
-    app:layout_constraintStart_toStartOf="@+id/bBack"
-    app:layout_constraintTop_toBottomOf="@+id/bBack" />
+    <Button
+        android:id="@+id/bPop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        app:layout_constraintEnd_toEndOf="@+id/bBack"
+        app:layout_constraintStart_toStartOf="@+id/bBack"
+        app:layout_constraintTop_toBottomOf="@+id/bBack" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,7 +17,7 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
     : Adapter<ListItem>,
     RecyclerView.Adapter<ItemAdapter.ItemHolder>() {
 
-    private val db = MainDB.getDB(context)
+    val db = MainDB.getDB(context)
 
     class ItemHolder(view: View) :
         RecyclerView.ViewHolder(view),
@@ -26,7 +26,7 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
         private val binding = ListItemBinding.bind(view)
         override fun bind(item: ListItem, pos: Int) {
             binding.apply {
-                tvNumber.text = (pos + 1).toString()
+                tvNumber.text = item.number.toString()
                 tvName.text = item.name
             }
         }
@@ -38,13 +38,25 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
 
     override fun add(item: ListItem) {
         dataSet.add(item)
-        notifyItemChanged(itemCount - 1)
+        notifyItemChanged(0)
     }
 
 
     override fun onDeleteClickListener(position: Int) {
         db.deleteItem(dataSet[position])
+        remove(position)
+    }
+
+    override fun remove(position: Int) {
         dataSet.removeAt(position)
+
+        Thread {
+            for (i in position until itemCount) {
+                val item = dataSet[i]
+                item.number--
+                db.getDao().updateItem(item)
+            }
+        }.start()
 
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, itemCount)
@@ -87,4 +99,6 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
             return@setOnLongClickListener true
         }
     }
+
+
 }

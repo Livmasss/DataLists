@@ -14,10 +14,16 @@
         android:theme="@style/Theme.IterTable"
         tools:targetApi="33">
         <activity
-            android:name=".activities.QueueActivity"
+            android:name=".activities.collectionActivities.StackActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ListActivity"
+            android:name=".activities.collectionActivities.QueueActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.collectionActivities.ListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.collectionActivities.CycleActivity"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"

@@ -11,5 +11,7 @@ data class ListItem(
     @ColumnInfo(name = "name")
     var name: String,
     @ColumnInfo(name = "master_id")
-    val masterId: Int
+    val masterId: Int,
+    @ColumnInfo(name = "number", defaultValue = "0")
+    var number: Int
 )

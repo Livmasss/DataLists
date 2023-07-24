@@ -16,8 +16,8 @@ interface Dao {
     fun insertItem(item: ListItem)
     @Query("SELECT * FROM collections")
     fun getAllColls(): List<CollectionItem>
-    @Query("SELECT * FROM items WHERE master_id = :id")
-    fun getCollectionItems(id: Int): List<ListItem>
+    @Query("SELECT * FROM items WHERE master_id = :id ORDER BY number")
+    fun getCollItems(id: Int): List<ListItem>
     @Delete
     fun deleteColl(item: CollectionItem)
     @Delete

@@ -1,35 +1,38 @@
-package com.livmas.itertable.activities
+package com.livmas.itertable.activities.collectionActivities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
-import com.livmas.itertable.databinding.ActivityCollectionBinding
+import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
 import com.livmas.itertable.dialogs.EditItemDialog
 import com.livmas.itertable.dialogs.NewListDialog
 import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.ListItem
-import com.livmas.itertable.recyclerAdapters.ListAdapter
+import com.livmas.itertable.recyclerAdapters.collections.CycleAdapter
 
 
-open class ListActivity : AppCompatActivity() {
+class CycleActivity: AppCompatActivity() {
+
     private val dataModel: DataModel by viewModels()
-    private lateinit var binding: ActivityCollectionBinding
+    private lateinit var binding: ActivityComplexCollectionBinding
     private lateinit var db: MainDB
-    private lateinit var adapter: ListAdapter
+    private lateinit var adapter: CycleAdapter
     private lateinit var collInfo: CollectionParcelable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCollectionBinding.inflate(layoutInflater)
+
+        binding = ActivityComplexCollectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
-        adapter = ListAdapter(this, dataModel)
+        adapter = CycleAdapter(this, dataModel)
         collInfo = intent.getParcelableExtra("collection")!!
 
         binding.apply {
@@ -42,6 +45,24 @@ open class ListActivity : AppCompatActivity() {
             bBack.setOnClickListener {
                 finish()
             }
+            bPop.setOnClickListener {
+                val item = adapter.pop()
+                item.number = adapter.itemCount
+                Thread {
+                    db.getDao().updateItem(item)
+                }.start()
+
+                for (i in 0 until adapter.itemCount - 1) {
+                    val iItem = adapter.at(i)
+                    iItem.number--
+                    adapter.notifyItemChanged(i)
+                    Thread {
+                        db.getDao().updateItem(iItem)
+                    }.start()
+                }
+
+                Toast.makeText(this@CycleActivity, item.name, Toast.LENGTH_SHORT).show()
+            }
         }
 
         initRecycler()
@@ -50,27 +71,16 @@ open class ListActivity : AppCompatActivity() {
         setObservers()
     }
 
-    private fun initRecycler() {
-        binding.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@ListActivity)
-            adapter = this@ListActivity.adapter
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@ListActivity,
-                    LinearLayoutManager.VERTICAL)
-            )
-        }
-    }
 
-    fun startNewListDialog() {
+    private fun startNewListDialog() {
         val dialog = NewListDialog()
         dialog.show(supportFragmentManager, "list")
     }
 
-    fun setObservers() {
+    private fun setObservers() {
         dataModel.newListName.observe(this) { name ->
             val item = collInfo.id?.let { masterId ->
-                ListItem(null, name, masterId)
+                ListItem(null, name, masterId, adapter.itemCount + 1)
             }
 
             if (item != null) {
@@ -95,10 +105,28 @@ open class ListActivity : AppCompatActivity() {
         }
     }
 
+    private fun initRecycler() {
+        binding.rvContent.apply {
+            layoutManager = LinearLayoutManager(this@CycleActivity)
+            adapter = this@CycleActivity.adapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@CycleActivity,
+                    LinearLayoutManager.VERTICAL)
+            )
+        }
+    }
+
     private fun initList() {
         Thread {
-            val data = db.getDao().getCollectionItems(collInfo.id!!)
+            val data = db.getDao().getCollItems(collInfo.id!!)
             data.forEach { item ->
+                if (item.number == 0) {
+                    item.number = adapter.itemCount + 1
+                    Thread {
+                        db.getDao().updateItem(item)
+                    }.start()
+                }
                 adapter.add(item)
             }
         }.start()

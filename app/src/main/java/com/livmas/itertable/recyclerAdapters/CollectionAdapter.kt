@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
-import com.livmas.itertable.activities.ListActivity
-import com.livmas.itertable.activities.QueueActivity
+import com.livmas.itertable.activities.collectionActivities.CycleActivity
+import com.livmas.itertable.activities.collectionActivities.ListActivity
+import com.livmas.itertable.activities.collectionActivities.QueueActivity
+import com.livmas.itertable.activities.collectionActivities.StackActivity
 import com.livmas.itertable.databinding.CollectionItemBinding
 import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.CollectionType
@@ -94,7 +96,10 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
         val intent = Intent(context, when (list.type) {
             CollectionType.List -> ListActivity::class.java
             CollectionType.Queue -> QueueActivity::class.java
-            else -> {ListActivity::class.java}
+            CollectionType.Cycle -> CycleActivity::class.java
+            CollectionType.Stack -> StackActivity::class.java
+            else -> {
+                ListActivity::class.java}
         }
             )
         intent.putExtra("collection", CollectionParcelable(list.id, list.name, list.type.ordinal))
@@ -103,6 +108,10 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
 
     override fun onDeleteClickListener(position: Int) {
         db.deleteCollection(dataSet[position])
+        remove(position)
+    }
+
+    override fun remove(position: Int) {
         dataSet.removeAt(position)
 
         notifyItemRemoved(position)
