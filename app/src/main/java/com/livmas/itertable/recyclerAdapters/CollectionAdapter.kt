@@ -13,16 +13,18 @@ import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
 import com.livmas.itertable.activities.ListActivity
+import com.livmas.itertable.activities.QueueActivity
 import com.livmas.itertable.databinding.CollectionItemBinding
 import com.livmas.itertable.entities.CollectionParcelable
+import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 import java.util.ArrayList
 
-class CollectionAdapter(private val db: MainDB, private val context: Context,
-                        private val dataModel: DataModel):
+class CollectionAdapter(private val context: Context, private val dataModel: DataModel):
         RecyclerView.Adapter<CollectionAdapter.CollectionHolder>(),
         Adapter<CollectionItem> {
     private val dataSet = ArrayList<CollectionItem>()
+    private val db = MainDB.getDB(context)
 
     class CollectionHolder(view: View):
             RecyclerView.ViewHolder(view),
@@ -82,8 +84,19 @@ class CollectionAdapter(private val db: MainDB, private val context: Context,
         notifyItemChanged(dataSet.size - 1)
     }
 
+    override fun setItemData(position: Int, name: String) {
+        dataSet[position].name = name
+
+        notifyItemChanged(position)
+    }
+
     fun openList(list: CollectionItem) {
-        val intent = Intent(context, ListActivity::class.java)
+        val intent = Intent(context, when (list.type) {
+            CollectionType.List -> ListActivity::class.java
+            CollectionType.Queue -> QueueActivity::class.java
+            else -> {ListActivity::class.java}
+        }
+            )
         intent.putExtra("collection", CollectionParcelable(list.id, list.name, list.type.ordinal))
         startActivity(context, intent, null)
     }
@@ -96,36 +109,7 @@ class CollectionAdapter(private val db: MainDB, private val context: Context,
         notifyItemRangeChanged(position, dataSet.size)
     }
 
-
-//    fun findItem(item: CollectionItem): Int {
-//        for (i in 0 until dataSet.size) {
-//            if (dataSet[i].number == item.number) {
-//                return i
-//            }
-//        }
-//        return -1
-//    }
-
-    fun at(position: Int): CollectionItem {
+    override fun at(position: Int): CollectionItem {
         return dataSet[position]
-    }
-//
-//    fun removeAt(position: Int) {
-//        val iterator = dataSet.iterator()
-//        var index = 0
-//        while (iterator.hasNext()) {
-//            iterator.next()
-//            if (position == index) {
-//                iterator.remove()
-//                return
-//            }
-//            index++
-//        }
-//    }
-
-    fun setItemData(position: Int, name: String) {
-        dataSet[position].name = name
-
-        notifyItemChanged(position)
     }
 }

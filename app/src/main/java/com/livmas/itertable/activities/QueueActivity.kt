@@ -7,29 +7,29 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
-import com.livmas.itertable.databinding.ActivityCollectionBinding
+import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
 import com.livmas.itertable.dialogs.EditItemDialog
 import com.livmas.itertable.dialogs.NewListDialog
 import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.ListItem
-import com.livmas.itertable.recyclerAdapters.ListAdapter
+import com.livmas.itertable.recyclerAdapters.QueueAdapter
 
-
-open class ListActivity : AppCompatActivity() {
+class QueueActivity : AppCompatActivity() {
     private val dataModel: DataModel by viewModels()
-    private lateinit var binding: ActivityCollectionBinding
+    private lateinit var binding: ActivityComplexCollectionBinding
     private lateinit var db: MainDB
-    private lateinit var adapter: ListAdapter
+    private lateinit var adapter: QueueAdapter
     private lateinit var collInfo: CollectionParcelable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCollectionBinding.inflate(layoutInflater)
+
+        binding = ActivityComplexCollectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
-        adapter = ListAdapter(this, dataModel)
+        adapter = QueueAdapter(this, dataModel)
         collInfo = intent.getParcelableExtra("collection")!!
 
         binding.apply {
@@ -50,17 +50,6 @@ open class ListActivity : AppCompatActivity() {
         setObservers()
     }
 
-    private fun initRecycler() {
-        binding.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@ListActivity)
-            adapter = this@ListActivity.adapter
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@ListActivity,
-                    LinearLayoutManager.VERTICAL)
-            )
-        }
-    }
 
     fun startNewListDialog() {
         val dialog = NewListDialog()
@@ -92,6 +81,18 @@ open class ListActivity : AppCompatActivity() {
             Thread{
                 db.getDao().updateItem(adapter.at(index))
             }.start()
+        }
+    }
+
+    private fun initRecycler() {
+        binding.rvContent.apply {
+            layoutManager = LinearLayoutManager(this@QueueActivity)
+            adapter = this@QueueActivity.adapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@QueueActivity,
+                    LinearLayoutManager.VERTICAL)
+            )
         }
     }
 

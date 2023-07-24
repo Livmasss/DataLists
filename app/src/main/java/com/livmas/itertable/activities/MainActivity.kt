@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
@@ -18,22 +17,22 @@ import com.livmas.itertable.dialogs.NewCollectionDialog
 class MainActivity : AppCompatActivity() {
     private val dataModel: DataModel by viewModels()
     private lateinit var binding: ActivityCollectionBinding
-    lateinit var db: MainDB
-    lateinit var adapter: CollectionAdapter
+    private lateinit var db: MainDB
+    private lateinit var adapter: CollectionAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCollectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         db = MainDB.getDB(this)
-        adapter = CollectionAdapter(db, this, dataModel)
+        adapter = CollectionAdapter(this, dataModel)
 
         initRecycler()
         initAdapter()
         binding.apply {
             tvType.visibility = View.GONE
             bBack.visibility = View.GONE
-            fbNewItem.setOnClickListener { FABClickListener() }
+            fabNewItem.setOnClickListener { newClickListener() }
         }
 
 
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun FABClickListener() {
+    private fun newClickListener() {
         val newCollectionDialog = NewCollectionDialog()
         newCollectionDialog.show(supportFragmentManager, "collection")
     }

@@ -14,6 +14,9 @@
         android:theme="@style/Theme.IterTable"
         tools:targetApi="33">
         <activity
+            android:name=".activities.QueueActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ListActivity"
             android:exported="false" />
         <activity
