@@ -11,15 +11,15 @@
         android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="0."
-        android:textSize="20sp"/>
+        android:text="@string/_0"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="15"
-        android:text="List Element"
+        android:text="@string/list_item"
         android:textSize="25sp"/>
 
     <ImageButton
@@ -27,7 +27,9 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@android:drawable/list_selector_background"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/trash" />
+        app:srcCompat="@drawable/trash"
+        android:contentDescription="@string/delete_item" />
 
 </LinearLayout>

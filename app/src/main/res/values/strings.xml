@@ -19,4 +19,9 @@
     <string name="edit_coll_dialog">Rename</string>
     <string name="next">next</string>
     <string name="type">Type</string>
+    <string name="_0">0.</string>
+    <string name="name">Name</string>
+    <string name="delete_coll">Delete collection</string>
+    <string name="list_item">List Item</string>
+    <string name="delete_item">Delete item</string>
 </resources>

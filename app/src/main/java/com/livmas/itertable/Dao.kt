@@ -13,7 +13,7 @@ interface Dao {
     @Insert
     fun insertColl(item: CollectionItem): Long
     @Insert
-    fun insertItem(item: ListItem)
+    fun insertItem(item: ListItem): Long
     @Query("SELECT * FROM collections")
     fun getAllColls(): List<CollectionItem>
     @Query("SELECT * FROM items WHERE master_id = :id ORDER BY number")

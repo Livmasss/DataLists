@@ -19,13 +19,14 @@ class StackAdapter(context: Context, dataModel: DataModel):
     override fun remove(position: Int) {
         dataSet.removeAt(position)
 
-        Thread {
-            for (i in 0 until position) {
-                val item = dataSet[i]
-                item.number--
+        for (i in 0 until position) {
+            val item = dataSet[i]
+            item.number--
+
+            Thread {
                 db.getDao().updateItem(item)
-            }
-        }.start()
+            }.start()
+        }
 
         notifyItemRemoved(position)
         notifyDataSetChanged()
@@ -33,6 +34,6 @@ class StackAdapter(context: Context, dataModel: DataModel):
 
     override fun add(item: ListItem) {
         dataSet.add(0, item)
-        notifyItemInserted(0)
+        notifyDataSetChanged()
     }
 }

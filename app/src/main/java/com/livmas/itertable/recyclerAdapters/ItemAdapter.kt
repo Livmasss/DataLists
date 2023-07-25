@@ -38,7 +38,7 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
 
     override fun add(item: ListItem) {
         dataSet.add(item)
-        notifyItemChanged(0)
+        notifyItemInserted(itemCount - 1)
     }
 
 
@@ -99,6 +99,4 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
             return@setOnLongClickListener true
         }
     }
-
-
 }

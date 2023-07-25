@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="0."
+        android:text="@string/_0"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvType"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginTop="16dp"
-        android:text="Name"
+        android:text="@string/name"
         android:textSize="23sp"
         app:layout_constraintStart_toEndOf="@+id/tvNumber"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Type"
+        android:text="@string/type"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tvName"
         app:layout_constraintTop_toBottomOf="@+id/tvName" />
@@ -43,11 +43,13 @@
         android:layout_height="0dp"
         android:layout_marginTop="-4dp"
         android:layout_marginBottom="-8dp"
+        android:background="@android:drawable/list_selector_background"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/tvType"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvName"
-        app:srcCompat="@drawable/trash" />
+        app:srcCompat="@drawable/trash"
+        android:contentDescription="@string/delete_coll" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.entities.items.ListItem
+import java.lang.IllegalStateException
 
 @Database(entities = [CollectionItem::class, ListItem::class],
     version = 8,
@@ -40,6 +41,14 @@ abstract class MainDB: RoomDatabase() {
 
     fun deleteCollection(collection: CollectionItem) {
         Thread {
+            if (collection.id == null) {
+                throw IllegalStateException("Collection id is null!")
+            }
+            val itemsToDelete = getDao().getCollItems(collection.id!!)
+            for (i in itemsToDelete) {
+                deleteItem(i)
+            }
+
             getDao().deleteColl(collection)
         }.start()
     }
