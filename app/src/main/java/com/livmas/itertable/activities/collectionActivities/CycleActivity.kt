@@ -86,7 +86,8 @@ class CycleActivity: AppCompatActivity() {
             if (item != null) {
                 adapter.add(item)
                 Thread {
-                    db.getDao().insertItem(item)
+                    val id = db.getDao().insertItem(item)
+                    item.id = id.toInt()
                 }.start()
             }
         }

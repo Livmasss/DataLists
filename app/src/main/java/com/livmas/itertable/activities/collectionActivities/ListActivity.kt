@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
+import com.livmas.itertable.ItemTouchCallback
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.databinding.ActivityCollectionBinding
 import com.livmas.itertable.dialogs.EditItemDialog
@@ -60,6 +62,9 @@ open class ListActivity : AppCompatActivity() {
                     LinearLayoutManager.VERTICAL)
             )
         }
+//
+//        val touchHelper = ItemTouchHelper(ItemTouchCallback(adapter))
+//        touchHelper.attachToRecyclerView(binding.rvContent)
     }
 
     private fun startNewListDialog() {
@@ -76,7 +81,8 @@ open class ListActivity : AppCompatActivity() {
             if (item != null) {
                 adapter.add(item)
                 Thread {
-                    db.getDao().insertItem(item)
+                    val id = db.getDao().insertItem(item)
+                    item.id = id.toInt()
                 }.start()
             }
         }

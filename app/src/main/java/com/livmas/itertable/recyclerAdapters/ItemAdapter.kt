@@ -41,6 +41,11 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
         notifyItemInserted(itemCount - 1)
     }
 
+    fun insert(position: Int, item: ListItem) {
+        dataSet.add(position, item)
+        notifyItemInserted(position)
+    }
+
 
     override fun onDeleteClickListener(position: Int) {
         db.deleteItem(dataSet[position])
