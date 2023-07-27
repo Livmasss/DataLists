@@ -2,6 +2,7 @@ package com.livmas.itertable.activities.collectionActivities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -43,6 +44,12 @@ class StackActivity : AppCompatActivity() {
             }
             bBack.setOnClickListener {
                 finish()
+            }
+            bPop.setOnClickListener {
+                val item = adapter.pop()
+
+                adapter.updateNumbers()
+                Toast.makeText(this@StackActivity, item.name, Toast.LENGTH_SHORT).show()
             }
         }
 
