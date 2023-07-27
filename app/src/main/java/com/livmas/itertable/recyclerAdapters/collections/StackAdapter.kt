@@ -28,4 +28,8 @@ class StackAdapter(context: Context, dataModel: DataModel):
         dataSet.add(0, item)
         notifyDataSetChanged()
     }
+
+    override fun updateNumber(position: Int) {
+        dataSet[position].number = itemCount - position
+    }
 }

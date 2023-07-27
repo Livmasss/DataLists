@@ -18,7 +18,7 @@ import com.livmas.itertable.entities.items.ListItem
 import com.livmas.itertable.recyclerAdapters.collections.ListAdapter
 
 
-open class ListActivity : AppCompatActivity() {
+class ListActivity : AppCompatActivity() {
     private val dataModel: DataModel by viewModels()
     private lateinit var binding: ActivityCollectionBinding
     private lateinit var db: MainDB
@@ -26,12 +26,13 @@ open class ListActivity : AppCompatActivity() {
     private lateinit var collInfo: CollectionParcelable
 
     private fun initRecycler() {
-        binding.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@ListActivity)
-            adapter = this@ListActivity.adapter
+        val context = this
+        with(binding.rvContent) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = context.adapter
             addItemDecoration(
                 DividerItemDecoration(
-                    this@ListActivity,
+                    context,
                     LinearLayoutManager.VERTICAL)
             )
         }

@@ -13,6 +13,7 @@ import com.livmas.itertable.databinding.ListItemBinding
 import com.livmas.itertable.entities.items.ListItem
 import java.lang.Integer.max
 import java.lang.Integer.min
+import java.util.Collections
 import java.util.LinkedList
 
 open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val context: Context, val dataModel: DataModel)
@@ -28,6 +29,7 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
         private val binding = ListItemBinding.bind(view)
         override fun bind(item: ListItem, pos: Int) {
             binding.apply {
+                tvNumber.text = item.number.toString()
                 tvName.text = item.name
             }
         }
@@ -80,6 +82,16 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
         return dataSet[position]
     }
 
+    fun swap(from: Int, to: Int) {
+        Collections.swap(dataSet, from, to)
+
+        val min = min(from, to)
+        val max = max(from, to)
+
+        updateRangeNumbers(min, max+1)
+        notifyItemMoved(from, to)
+    }
+
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         holder.bind(dataSet[position], position)
         holder.getBinding().ibDelete.setOnClickListener {
@@ -93,13 +105,13 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
 
             dialog.show()
         }
-        holder.getBinding().root.setOnLongClickListener {
-            dataModel.editItemIndex.value = position
-            return@setOnLongClickListener true
-        }
+//        holder.getBinding().root.setOnLongClickListener {
+//            dataModel.editItemIndex.value = position
+//            return@setOnLongClickListener true
+//        }
     }
 
-    fun updateNumber(position: Int) {
+    open fun updateNumber(position: Int) {
         dataSet[position].number = position + 1
     }
     fun updateRangeNumbers(start: Int, end: Int) {

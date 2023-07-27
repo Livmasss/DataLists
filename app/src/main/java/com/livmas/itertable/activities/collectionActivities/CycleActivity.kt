@@ -5,8 +5,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
+import com.livmas.itertable.ItemTouchCallback
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
 import com.livmas.itertable.dialogs.EditItemDialog
@@ -46,11 +48,15 @@ class CycleActivity: AppCompatActivity() {
                 finish()
             }
             bPop.setOnClickListener {
-                val item = adapter.pop()
-                item.number = adapter.itemCount
+                adapter.apply {
+                    val item = pop()
+                    item.number = itemCount
 
-                adapter.updateNumbers()
-                Toast.makeText(this@CycleActivity, item.name, Toast.LENGTH_SHORT).show()
+                    updateNumbers()
+                    notifyDataSetChanged()
+
+                    Toast.makeText(this@CycleActivity, item.name, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -96,18 +102,6 @@ class CycleActivity: AppCompatActivity() {
         }
     }
 
-    private fun initRecycler() {
-        binding.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@CycleActivity)
-            adapter = this@CycleActivity.adapter
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@CycleActivity,
-                    LinearLayoutManager.VERTICAL)
-            )
-        }
-    }
-
     private fun initList() {
         Thread {
             val data = db.getDao().getCollItems(collInfo.id!!)
@@ -115,5 +109,21 @@ class CycleActivity: AppCompatActivity() {
                 adapter.add(item)
             }
         }.start()
+    }
+
+    private fun initRecycler() {
+        val context = this
+        with(binding.rvContent) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = context.adapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL)
+            )
+        }
+
+        val touchHelper = ItemTouchHelper(ItemTouchCallback(adapter))
+        touchHelper.attachToRecyclerView(binding.rvContent)
     }
 }

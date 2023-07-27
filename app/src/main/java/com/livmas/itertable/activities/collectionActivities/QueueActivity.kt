@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
+import com.livmas.itertable.ItemTouchCallback
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
 import com.livmas.itertable.dialogs.EditItemDialog
@@ -16,8 +18,7 @@ import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.ListItem
 import com.livmas.itertable.recyclerAdapters.collections.QueueAdapter
 
-open class QueueActivity : AppCompatActivity() {
-    private val dataModel: DataModel by viewModels()
+open class QueueActivity : AppCompatActivity() {private val dataModel: DataModel by viewModels()
     private lateinit var binding: ActivityComplexCollectionBinding
     private lateinit var db: MainDB
     private lateinit var adapter: QueueAdapter
@@ -45,6 +46,9 @@ open class QueueActivity : AppCompatActivity() {
             }
             bPop.setOnClickListener {
                 val item = adapter.pop()
+                item.number = adapter.itemCount
+
+                adapter.updateNumbers()
                 Toast.makeText(this@QueueActivity, item.name, Toast.LENGTH_SHORT).show()
             }
         }
@@ -58,12 +62,6 @@ open class QueueActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         adapter.dbUpdate()
-    }
-
-
-    private fun startNewListDialog() {
-        val dialog = NewListDialog()
-        dialog.show(supportFragmentManager, "list")
     }
 
     private fun setObservers() {
@@ -92,18 +90,6 @@ open class QueueActivity : AppCompatActivity() {
         }
     }
 
-    private fun initRecycler() {
-        binding.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@QueueActivity)
-            adapter = this@QueueActivity.adapter
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@QueueActivity,
-                    LinearLayoutManager.VERTICAL)
-            )
-        }
-    }
-
     private fun initList() {
         Thread {
             val data = db.getDao().getCollItems(collInfo.id!!)
@@ -111,5 +97,26 @@ open class QueueActivity : AppCompatActivity() {
                 adapter.add(item)
             }
         }.start()
+    }
+
+    private fun initRecycler() {
+        val context = this
+        with(binding.rvContent) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = context.adapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL)
+            )
+        }
+
+        val touchHelper = ItemTouchHelper(ItemTouchCallback(adapter))
+        touchHelper.attachToRecyclerView(binding.rvContent)
+    }
+
+    private fun startNewListDialog() {
+        val dialog = NewListDialog()
+        dialog.show(supportFragmentManager, "list")
     }
 }

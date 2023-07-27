@@ -2,11 +2,12 @@ package com.livmas.itertable.activities.collectionActivities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
+import com.livmas.itertable.ItemTouchCallback
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
 import com.livmas.itertable.dialogs.EditItemDialog
@@ -26,7 +27,6 @@ class StackActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityComplexCollectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -44,10 +44,6 @@ class StackActivity : AppCompatActivity() {
             bBack.setOnClickListener {
                 finish()
             }
-            bPop.setOnClickListener {
-                val item = adapter.pop()
-                Toast.makeText(this@StackActivity, item.name, Toast.LENGTH_SHORT).show()
-            }
         }
 
         initRecycler()
@@ -56,10 +52,6 @@ class StackActivity : AppCompatActivity() {
         setObservers()
     }
 
-    override fun onStop() {
-        super.onStop()
-        adapter.dbUpdate()
-    }
 
     private fun startNewListDialog() {
         val dialog = NewListDialog()
@@ -91,17 +83,25 @@ class StackActivity : AppCompatActivity() {
             adapter.setItemData(index, name)
         }
     }
-
     private fun initRecycler() {
-        binding.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@StackActivity)
-            adapter = this@StackActivity.adapter
+        val context = this
+        with(binding.rvContent) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = context.adapter
             addItemDecoration(
                 DividerItemDecoration(
-                    this@StackActivity,
+                    context,
                     LinearLayoutManager.VERTICAL)
             )
         }
+
+        val touchHelper = ItemTouchHelper(ItemTouchCallback(adapter))
+        touchHelper.attachToRecyclerView(binding.rvContent)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.dbUpdate()
     }
 
     private fun initList() {
