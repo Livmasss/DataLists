@@ -22,11 +22,24 @@ class ItemTouchCallback(private val adapter: ItemAdapter): ItemTouchHelper.Callb
 
         val from = viewHolder.absoluteAdapterPosition
         val to = target.absoluteAdapterPosition
+
+        if (from < 0 || to < 0) {
+            return false
+        }
+        if (from > adapter.itemCount || to > adapter.itemCount) {
+            return false
+        }
+
         val item = adapter.at(from)
 
         adapter.apply {
             remove(from)
             insert(to, item)
+
+            val min = Integer.min(from, to)
+            val max = Integer.max(from, to)
+
+            updateRangeNumbers(min, max+1)
         }
 
         return true

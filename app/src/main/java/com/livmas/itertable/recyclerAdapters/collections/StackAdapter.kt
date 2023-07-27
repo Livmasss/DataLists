@@ -19,15 +19,7 @@ class StackAdapter(context: Context, dataModel: DataModel):
     override fun remove(position: Int) {
         dataSet.removeAt(position)
 
-        for (i in 0 until position) {
-            val item = dataSet[i]
-            item.number--
-
-            Thread {
-                db.getDao().updateItem(item)
-            }.start()
-        }
-
+        updateRangeNumbers(0, position)
         notifyItemRemoved(position)
         notifyDataSetChanged()
     }

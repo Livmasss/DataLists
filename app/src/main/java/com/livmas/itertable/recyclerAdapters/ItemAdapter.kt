@@ -11,6 +11,8 @@ import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ListItemBinding
 import com.livmas.itertable.entities.items.ListItem
+import java.lang.Integer.max
+import java.lang.Integer.min
 import java.util.LinkedList
 
 open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val context: Context, val dataModel: DataModel)
@@ -26,7 +28,6 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
         private val binding = ListItemBinding.bind(view)
         override fun bind(item: ListItem, pos: Int) {
             binding.apply {
-                tvNumber.text = item.number.toString()
                 tvName.text = item.name
             }
         }
@@ -55,14 +56,7 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
     override fun remove(position: Int) {
         dataSet.removeAt(position)
 
-        Thread {
-            for (i in position until itemCount) {
-                val item = dataSet[i]
-                item.number--
-                db.getDao().updateItem(item)
-            }
-        }.start()
-
+        updateRangeNumbers(position, itemCount)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, itemCount)
     }
@@ -103,5 +97,24 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
             dataModel.editItemIndex.value = position
             return@setOnLongClickListener true
         }
+    }
+
+    fun updateNumber(position: Int) {
+        dataSet[position].number = position + 1
+    }
+    fun updateRangeNumbers(start: Int, end: Int) {
+        for (i in start until end)
+            updateNumber(i)
+    }
+    fun updateNumbers() {
+        updateRangeNumbers(0, itemCount)
+    }
+
+    fun dbUpdate() {
+        Thread {
+            dataSet.forEach {
+                db.getDao().updateItem(it)
+            }
+        }.start()
     }
 }

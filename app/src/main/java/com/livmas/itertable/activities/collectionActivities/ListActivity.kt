@@ -25,6 +25,21 @@ open class ListActivity : AppCompatActivity() {
     private lateinit var adapter: ListAdapter
     private lateinit var collInfo: CollectionParcelable
 
+    private fun initRecycler() {
+        binding.rvContent.apply {
+            layoutManager = LinearLayoutManager(this@ListActivity)
+            adapter = this@ListActivity.adapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@ListActivity,
+                    LinearLayoutManager.VERTICAL)
+            )
+        }
+
+        val touchHelper = ItemTouchHelper(ItemTouchCallback(adapter))
+        touchHelper.attachToRecyclerView(binding.rvContent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCollectionBinding.inflate(layoutInflater)
@@ -52,19 +67,9 @@ open class ListActivity : AppCompatActivity() {
         setObservers()
     }
 
-    private fun initRecycler() {
-        binding.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@ListActivity)
-            adapter = this@ListActivity.adapter
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@ListActivity,
-                    LinearLayoutManager.VERTICAL)
-            )
-        }
-//
-//        val touchHelper = ItemTouchHelper(ItemTouchCallback(adapter))
-//        touchHelper.attachToRecyclerView(binding.rvContent)
+    override fun onStop() {
+        super.onStop()
+        adapter.dbUpdate()
     }
 
     private fun startNewListDialog() {
@@ -95,9 +100,6 @@ open class ListActivity : AppCompatActivity() {
         dataModel.editItemName.observe(this) { name ->
             val index = dataModel.editItemIndex.value!!
             adapter.setItemData(index, name)
-            Thread{
-                db.getDao().updateItem(adapter.at(index))
-            }.start()
         }
     }
 
@@ -105,12 +107,6 @@ open class ListActivity : AppCompatActivity() {
         Thread {
             val data = db.getDao().getCollItems(collInfo.id!!)
             data.forEach { item ->
-                if (item.number == 0) {
-                    item.number = adapter.itemCount + 1
-                    Thread {
-                        db.getDao().updateItem(item)
-                    }.start()
-                }
                 adapter.add(item)
             }
         }.start()

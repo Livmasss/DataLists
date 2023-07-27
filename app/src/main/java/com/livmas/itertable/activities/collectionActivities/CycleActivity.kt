@@ -48,19 +48,8 @@ class CycleActivity: AppCompatActivity() {
             bPop.setOnClickListener {
                 val item = adapter.pop()
                 item.number = adapter.itemCount
-                Thread {
-                    db.getDao().updateItem(item)
-                }.start()
 
-                for (i in 0 until adapter.itemCount - 1) {
-                    val iItem = adapter.at(i)
-                    iItem.number--
-                    adapter.notifyItemChanged(i)
-                    Thread {
-                        db.getDao().updateItem(iItem)
-                    }.start()
-                }
-
+                adapter.updateNumbers()
                 Toast.makeText(this@CycleActivity, item.name, Toast.LENGTH_SHORT).show()
             }
         }
@@ -71,6 +60,10 @@ class CycleActivity: AppCompatActivity() {
         setObservers()
     }
 
+    override fun onStop() {
+        super.onStop()
+        adapter.dbUpdate()
+    }
 
     private fun startNewListDialog() {
         val dialog = NewListDialog()
@@ -100,9 +93,6 @@ class CycleActivity: AppCompatActivity() {
         dataModel.editItemName.observe(this) { name ->
             val index = dataModel.editItemIndex.value!!
             adapter.setItemData(index, name)
-            Thread{
-                db.getDao().updateItem(adapter.at(index))
-            }.start()
         }
     }
 
@@ -122,12 +112,6 @@ class CycleActivity: AppCompatActivity() {
         Thread {
             val data = db.getDao().getCollItems(collInfo.id!!)
             data.forEach { item ->
-                if (item.number == 0) {
-                    item.number = adapter.itemCount + 1
-                    Thread {
-                        db.getDao().updateItem(item)
-                    }.start()
-                }
                 adapter.add(item)
             }
         }.start()

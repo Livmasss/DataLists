@@ -121,4 +121,12 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
     override fun at(position: Int): CollectionItem {
         return dataSet[position]
     }
+
+    fun dbUpdate() {
+        Thread {
+            dataSet.forEach {
+                db.getDao().updateColl(it)
+            }
+        }.start()
+    }
 }

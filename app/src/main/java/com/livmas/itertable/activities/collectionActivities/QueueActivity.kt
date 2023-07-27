@@ -55,6 +55,11 @@ open class QueueActivity : AppCompatActivity() {
         setObservers()
     }
 
+    override fun onStop() {
+        super.onStop()
+        adapter.dbUpdate()
+    }
+
 
     private fun startNewListDialog() {
         val dialog = NewListDialog()
@@ -84,9 +89,6 @@ open class QueueActivity : AppCompatActivity() {
         dataModel.editItemName.observe(this) { name ->
             val index = dataModel.editItemIndex.value!!
             adapter.setItemData(index, name)
-            Thread{
-                db.getDao().updateItem(adapter.at(index))
-            }.start()
         }
     }
 
@@ -106,12 +108,6 @@ open class QueueActivity : AppCompatActivity() {
         Thread {
             val data = db.getDao().getCollItems(collInfo.id!!)
             data.forEach { item ->
-                if (item.number == 0) {
-                    item.number = adapter.itemCount + 1
-                    Thread {
-                        db.getDao().updateItem(item)
-                    }.start()
-                }
                 adapter.add(item)
             }
         }.start()

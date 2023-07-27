@@ -35,8 +35,12 @@ class MainActivity : AppCompatActivity() {
             fabNewItem.setOnClickListener { newClickListener() }
         }
 
-
         setDialogObserver()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.dbUpdate()
     }
 
     private fun initRecycler() {
@@ -79,9 +83,6 @@ class MainActivity : AppCompatActivity() {
         dataModel.editCollName.observe(this) { name ->
                 val index = dataModel.editCollIndex.value!!
                 adapter.setItemData(index, name)
-            Thread {
-                db.getDao().updateColl(adapter.at(index))
-            }.start()
         }
     }
 
