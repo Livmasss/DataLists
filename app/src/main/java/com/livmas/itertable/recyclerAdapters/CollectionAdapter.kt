@@ -71,9 +71,8 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
             openList(dataSet[position])
         }
 
-        holder.getBinding().root.setOnLongClickListener {
+        holder.getBinding().ibEdit.setOnClickListener {
             dataModel.editCollIndex.value = position
-            return@setOnLongClickListener true
         }
     }
 

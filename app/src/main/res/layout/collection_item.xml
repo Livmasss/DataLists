@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp">
 
@@ -38,18 +37,30 @@
         app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
     <ImageButton
+        android:id="@+id/ibEdit"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:background="@android:drawable/list_selector_background"
+        android:contentDescription="@string/edit_item"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/ibDelete"
+        app:layout_constraintEnd_toStartOf="@+id/ibDelete"
+        app:layout_constraintTop_toTopOf="@+id/ibDelete"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <ImageButton
         android:id="@+id/ibDelete"
-        android:layout_width="70dp"
+        android:layout_width="50dp"
         android:layout_height="0dp"
         android:layout_marginTop="-4dp"
         android:layout_marginBottom="-8dp"
         android:background="@android:drawable/list_selector_background"
+        android:contentDescription="@string/delete_coll"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/tvType"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvName"
-        app:srcCompat="@drawable/trash"
-        android:contentDescription="@string/delete_coll" />
+        app:srcCompat="@drawable/trash" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

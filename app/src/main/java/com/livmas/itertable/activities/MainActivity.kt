@@ -1,18 +1,18 @@
 package com.livmas.itertable.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.databinding.ActivityCollectionBinding
 import com.livmas.itertable.dialogs.EditItemDialog
-import com.livmas.itertable.recyclerAdapters.CollectionAdapter
-import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.dialogs.NewCollectionDialog
+import com.livmas.itertable.entities.items.CollectionItem
+import com.livmas.itertable.recyclerAdapters.CollectionAdapter
 
 class MainActivity : AppCompatActivity() {
     private val dataModel: DataModel by viewModels()

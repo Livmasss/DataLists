@@ -107,10 +107,9 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
 
             dialog.show()
         }
-//        holder.getBinding().root.setOnLongClickListener {
-//            dataModel.editItemIndex.value = position
-//            return@setOnLongClickListener true
-//        }
+        holder.getBinding().ibEdit.setOnClickListener {
+            dataModel.editItemIndex.value = position
+        }
     }
 
     open fun updateNumber(position: Int) {
