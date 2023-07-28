@@ -16,7 +16,7 @@ import java.lang.Integer.min
 import java.util.Collections
 import java.util.LinkedList
 
-open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val context: Context, val dataModel: DataModel)
+abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val context: Context, val dataModel: DataModel)
     : Adapter<ListItem>,
     RecyclerView.Adapter<ItemAdapter.ItemHolder>() {
 
@@ -48,6 +48,8 @@ open class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val 
         dataSet.add(position, item)
         notifyItemInserted(position)
     }
+
+    abstract fun pop(): ListItem
 
 
     override fun onDeleteClickListener(position: Int) {

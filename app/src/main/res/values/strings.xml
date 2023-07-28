@@ -4,6 +4,8 @@
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
     <string name="back">Back</string>
+    <string name="delete_item">Delete item</string>
+    <string name="delete_coll">Delete collection</string>
 
     <string name="list">List</string>
     <string name="queue">Queue</string>
@@ -17,11 +19,11 @@
     <string name="new_item_dialog">Create new item</string>
     <string name="new_coll_dialog">Create new collection</string>
     <string name="edit_coll_dialog">Rename</string>
-    <string name="next">next</string>
+    <string name="next">Next</string>
     <string name="type">Type</string>
     <string name="_0">0.</string>
     <string name="name">Name</string>
-    <string name="delete_coll">Delete collection</string>
     <string name="list_item">List Item</string>
-    <string name="delete_item">Delete item</string>
+    
+    <string name="colon">%1$s:</string>
 </resources>

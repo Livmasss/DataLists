@@ -8,4 +8,7 @@ import java.util.LinkedList
 
 class ListAdapter(context: Context, dataModel: DataModel):
         ItemAdapter(LinkedList<ListItem>(), context, dataModel){
+        override fun pop(): ListItem {
+                return dataSet[0]
+        }
 }
