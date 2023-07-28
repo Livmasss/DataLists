@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.DataModel
-import com.livmas.itertable.ItemTouchCallback
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.dialogs.EditItemDialog
 import com.livmas.itertable.dialogs.NewListDialog
 import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.items.ListItem
+import com.livmas.itertable.itemTouchCallbacks.ItemTouchCallback
 import com.livmas.itertable.recyclerAdapters.ItemAdapter
 
 abstract class CollectionActivity: AppCompatActivity() {

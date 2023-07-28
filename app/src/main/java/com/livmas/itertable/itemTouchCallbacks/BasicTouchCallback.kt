@@ -1,12 +1,12 @@
-package com.livmas.itertable
+package com.livmas.itertable.itemTouchCallbacks
 
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.livmas.itertable.recyclerAdapters.ItemAdapter
+import com.livmas.itertable.R
 
-class ItemTouchCallback(private val adapter: ItemAdapter): ItemTouchHelper.Callback() {
+abstract class BasicTouchCallback(): ItemTouchHelper.Callback() {
     var holder: RecyclerView.ViewHolder? = null
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -23,14 +23,6 @@ class ItemTouchCallback(private val adapter: ItemAdapter): ItemTouchHelper.Callb
         if (viewHolder.itemViewType != target.itemViewType)
             return false
 
-        val from = viewHolder.absoluteAdapterPosition
-        val to = target.absoluteAdapterPosition
-
-        adapter.apply {
-            swap(from, to)
-            notifyItemChanged(from)
-        }
-
         viewHolder.itemView.findViewById<TextView>(R.id.tvNumber).visibility = View.INVISIBLE
         return true
     }
@@ -43,12 +35,6 @@ class ItemTouchCallback(private val adapter: ItemAdapter): ItemTouchHelper.Callb
         super.onSelectedChanged(viewHolder, actionState)
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
                 holder = viewHolder
-            }
-        if (actionState == ItemTouchHelper.ACTION_STATE_IDLE) {
-            holder?.let {
-                adapter.notifyItemChanged(it.absoluteAdapterPosition)
-                it.itemView.findViewById<TextView>(R.id.tvNumber).visibility = View.VISIBLE
-            }
         }
     }
 }
