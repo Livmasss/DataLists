@@ -12,5 +12,7 @@ data class CollectionItem(
     @ColumnInfo(name = "name")
     var name: String,
     @ColumnInfo(name = "type_id")
-    var type: CollectionType
+    var type: CollectionType,
+    @ColumnInfo(name = "number", defaultValue = "0")
+    var number: Int
 )

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
@@ -12,6 +13,7 @@ import com.livmas.itertable.databinding.ActivityCollectionBinding
 import com.livmas.itertable.dialogs.EditItemDialog
 import com.livmas.itertable.dialogs.NewCollectionDialog
 import com.livmas.itertable.entities.items.CollectionItem
+import com.livmas.itertable.itemTouchCallbacks.CollectionTouchCallback
 import com.livmas.itertable.recyclerAdapters.CollectionAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -53,6 +55,9 @@ class MainActivity : AppCompatActivity() {
                     LinearLayoutManager.VERTICAL)
             )
         }
+
+        val touchHelper = ItemTouchHelper(CollectionTouchCallback(adapter))
+        touchHelper.attachToRecyclerView(binding.rvContent)
     }
 
     private fun newClickListener() {
@@ -62,9 +67,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setDialogObserver() {
         lateinit var item: CollectionItem
-        dataModel.newCollName.observe(this) { name ->
-            dataModel.newCollType.value?.let { type ->
-                item = CollectionItem(null, name, type)
+        dataModel.newCollection.observe(this) { name ->
+            dataModel.newCollection.value?.let { coll ->
+                item = coll
                 adapter.add(item) }
 
             Thread {

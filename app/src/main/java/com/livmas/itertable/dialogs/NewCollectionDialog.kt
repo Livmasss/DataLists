@@ -12,6 +12,7 @@ import com.livmas.itertable.DataModel
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.CollectionInputDialogBinding
 import com.livmas.itertable.entities.CollectionType
+import com.livmas.itertable.entities.items.CollectionItem
 
 class NewCollectionDialog: DialogFragment() {
     private val dataModel: DataModel by activityViewModels()
@@ -36,8 +37,7 @@ class NewCollectionDialog: DialogFragment() {
                     return@setPositiveButton
                 }
                 //Writes collection data in dataModel
-                dataModel.newCollType.value = collType
-                dataModel.newCollName.value = name
+                dataModel.newCollection.value = CollectionItem(null, name, collType!!, 0)
             }
             .setNegativeButton(R.string.cancel) { _, _ ->
 

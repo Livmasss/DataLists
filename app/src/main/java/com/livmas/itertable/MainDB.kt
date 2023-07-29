@@ -5,15 +5,14 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.entities.items.ListItem
 import java.lang.IllegalStateException
 
 @Database(entities = [CollectionItem::class, ListItem::class],
-    version = 8,
+    version = 9,
     autoMigrations = [
-        AutoMigration(from = 7, to = 8)
+        AutoMigration(from = 8, to = 9)
     ])
 abstract class MainDB: RoomDatabase() {
     abstract fun getDao(): Dao
@@ -28,14 +27,12 @@ abstract class MainDB: RoomDatabase() {
     }
 
     fun insertCollectionFromDataModel(dataModel: DataModel): Long {
-        var type = dataModel.newCollType.value
-        if (type == null) {
-            type = CollectionType.List
-        }
+        val coll: CollectionItem = dataModel.newCollection.value ?: return 0
         val item = CollectionItem(
             null,
-            dataModel.newCollName.value.orEmpty(),
-            type)
+            coll.name,
+            coll.type,
+            coll.number)
         return getDao().insertColl(item)
     }
 

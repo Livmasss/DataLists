@@ -21,6 +21,7 @@ import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 import java.util.ArrayList
+import java.util.Collections
 
 class CollectionAdapter(private val context: Context, private val dataModel: DataModel):
         RecyclerView.Adapter<CollectionAdapter.CollectionHolder>(),
@@ -85,15 +86,15 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
         notifyItemChanged(dataSet.size - 1)
     }
 
-//    fun swap(from: Int, to: Int) {
-//        Collections.swap(dataSet, from, to)
-//
-//        val min = Integer.min(from, to)
-//        val max = Integer.max(from, to)
-//
-//        updateRangeNumbers(min, max+1)
-//        notifyItemMoved(from, to)
-//    }
+    fun swap(from: Int, to: Int) {
+        Collections.swap(dataSet, from, to)
+
+        val min = Integer.min(from, to)
+        val max = Integer.max(from, to)
+
+        updateRangeNumbers(min, max+1)
+        notifyItemMoved(from, to)
+    }
 
     override fun setItemData(position: Int, name: String) {
         dataSet[position].name = name
@@ -138,14 +139,14 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
             }
         }.start()
     }
-//    open fun updateNumber(position: Int) {
-//        dataSet[position].number = position + 1
-//    }
-//    fun updateRangeNumbers(start: Int, end: Int) {
-//        for (i in start until end)
-//            updateNumber(i)
-//    }
-//    fun updateNumbers() {
-//        updateRangeNumbers(0, itemCount)
-//    }
+    fun updateNumber(position: Int) {
+        dataSet[position].number = position + 1
+    }
+    fun updateRangeNumbers(start: Int, end: Int) {
+        for (i in start until end)
+            updateNumber(i)
+    }
+    fun updateNumbers() {
+        updateRangeNumbers(0, itemCount)
+    }
 }
