@@ -1,30 +1,36 @@
 <resources>
     <string name="app_name">IterTable</string>
+
+    <!-- Actions -->
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
     <string name="back">Back</string>
     <string name="delete_item">Delete item</string>
     <string name="delete_coll">Delete collection</string>
+    <string name="edit_coll_dialog">Rename</string>
+    <string name="next">Next</string>
+    <string name="edit_item">Edit item</string>
 
+    <!-- Collection names. -->
     <string name="list">List</string>
     <string name="queue">Queue</string>
     <string name="stack">Stack</string>
     <string name="cycle">Cycle</string>
     <string name="checkbox_list">CheckBoxList</string>
 
+    <!-- Messages -->
     <string name="enter_data_toast">You should enter collection type and name!</string>
     <string name="delete_message">Do you really want to delete this collection?</string>
-    <string name="collection_name">Your collections:</string>
+    <string name="empty_collection">No items in collection!</string>
     <string name="new_item_dialog">Create new item</string>
     <string name="new_coll_dialog">Create new collection</string>
-    <string name="edit_coll_dialog">Rename</string>
-    <string name="next">Next</string>
+
+    <!-- Content -->
+    <string name="collection_name">Your collections:</string>
     <string name="type">Type</string>
     <string name="_0">0.</string>
     <string name="name">Name</string>
     <string name="list_item">List Item</string>
-    
     <string name="colon">%1$s:</string>
-    <string name="edit_item">Edit item</string>
 </resources>

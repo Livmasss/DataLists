@@ -9,7 +9,9 @@ import java.util.LinkedList
 open class QueueAdapter(context: Context, dataModel: DataModel):
     ItemAdapter(LinkedList<ListItem>(), context, dataModel) {
 
-    override fun pop(): ListItem {
+    override fun pop(): ListItem? {
+        if (isEmpty())
+            return null
         val toReturn = getItem()
         onDeleteClickListener(0)
         return toReturn

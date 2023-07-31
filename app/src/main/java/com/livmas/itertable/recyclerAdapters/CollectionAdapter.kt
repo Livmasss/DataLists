@@ -83,7 +83,6 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
 
     override fun add(item: CollectionItem) {
         dataSet.add(item)
-        notifyItemChanged(dataSet.size - 1)
     }
 
     fun swap(from: Int, to: Int) {

@@ -1,6 +1,7 @@
 package com.livmas.itertable.activities.collectionActivities
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.livmas.itertable.activities.ComplexCollectionActivity
 import com.livmas.itertable.recyclerAdapters.ItemAdapter
@@ -13,9 +14,13 @@ class CycleActivity: ComplexCollectionActivity() {
         adapter = CycleAdapter(this, dataModel)
         super.onCreate(savedInstanceState)
 
-        binding.bPop.setOnClickListener {
+        binding.bPop.setOnClickListener(popClickListener())
+    }
+
+    private fun popClickListener(): View.OnClickListener {
+        return View.OnClickListener {
             adapter.apply {
-                val item = pop()
+                val item = pop() ?: return@apply
                 item.number = itemCount
 
                 updateNumbers()

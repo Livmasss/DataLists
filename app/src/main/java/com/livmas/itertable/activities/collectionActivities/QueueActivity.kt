@@ -13,7 +13,7 @@ open class QueueActivity : ComplexCollectionActivity() {
         super.onCreate(savedInstanceState)
 
         binding.bPop.setOnClickListener {
-            val item = adapter.pop()
+            val item = adapter.pop() ?: return@setOnClickListener
 
             Toast.makeText(this, item.name, Toast.LENGTH_SHORT).show()
         }

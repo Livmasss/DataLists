@@ -54,11 +54,13 @@ abstract class CollectionActivity: AppCompatActivity() {
         touchHelper.attachToRecyclerView(rv)
     }
 
-    protected fun initList() {
+    private fun initList() {
         Thread {
             val data = db.getDao().getCollItems(collInfo.id!!)
             data.forEach { item ->
-                adapter.add(item)
+                adapter.apply {
+                    add(item)
+                }
             }
         }.start()
     }
@@ -68,14 +70,17 @@ abstract class CollectionActivity: AppCompatActivity() {
         dialog.show(supportFragmentManager, "list")
     }
 
-    protected fun setObservers() {
+    private fun setObservers() {
         dataModel.newListName.observe(this) { name ->
             val item = collInfo.id?.let { masterId ->
                 ListItem(null, name, masterId, adapter.itemCount + 1)
             }
 
             if (item != null) {
-                adapter.add(item)
+                adapter.apply {
+                    add(item)
+                    notifyItemInserted(itemCount - 1)
+                }
                 Thread {
                     val id = db.getDao().insertItem(item)
                     item.id = id.toInt()

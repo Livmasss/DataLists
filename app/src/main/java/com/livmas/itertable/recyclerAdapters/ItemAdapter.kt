@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
@@ -41,7 +42,6 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
 
     override fun add(item: ListItem) {
         dataSet.add(item)
-        notifyItemInserted(itemCount - 1)
     }
 
     fun insert(position: Int, item: ListItem) {
@@ -49,8 +49,7 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
         notifyItemInserted(position)
     }
 
-    abstract fun pop(): ListItem
-
+    abstract fun pop(): ListItem?
 
     override fun onDeleteClickListener(position: Int) {
         db.deleteItem(dataSet[position])
@@ -129,5 +128,13 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
                 db.getDao().updateItem(it)
             }
         }.start()
+    }
+
+    protected fun isEmpty(): Boolean {
+        if (itemCount < 1) {
+            Toast.makeText(context, R.string.empty_collection, Toast.LENGTH_SHORT).show()
+            return true
+        }
+        return false
     }
 }

@@ -6,7 +6,10 @@ import com.livmas.itertable.entities.items.ListItem
 
 class StackAdapter(context: Context, dataModel: DataModel):
     QueueAdapter(context, dataModel) {
-    override fun pop(): ListItem {
+    override fun pop(): ListItem? {
+        if (isEmpty())
+            return null
+
         val item = getItem()
         onDeleteClickListener(0)
         return item
@@ -21,12 +24,12 @@ class StackAdapter(context: Context, dataModel: DataModel):
 
         updateRangeNumbers(0, position)
         notifyItemRemoved(position)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, position)
     }
 
     override fun add(item: ListItem) {
         dataSet.add(0, item)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, itemCount)
     }
 
     override fun updateNumber(position: Int) {
