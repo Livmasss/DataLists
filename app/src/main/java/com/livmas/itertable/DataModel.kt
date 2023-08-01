@@ -3,6 +3,7 @@ package com.livmas.itertable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.livmas.itertable.entities.items.CollectionItem
+import java.util.Date
 
 open class DataModel: ViewModel() {
     val newCollection: MutableLiveData<CollectionItem> by lazy {
@@ -24,5 +25,9 @@ open class DataModel: ViewModel() {
     }
     val editItemName: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
+    }
+
+    val alertDate: MutableLiveData<Date> by lazy {
+        MutableLiveData<Date>()
     }
 }

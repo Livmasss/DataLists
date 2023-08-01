@@ -70,7 +70,7 @@ abstract class CollectionActivity: AppCompatActivity() {
         dialog.show(supportFragmentManager, "list")
     }
 
-    private fun setObservers() {
+    open fun setObservers() {
         dataModel.newListName.observe(this) { name ->
             val item = collInfo.id?.let { masterId ->
                 ListItem(null, name, masterId, adapter.itemCount + 1)

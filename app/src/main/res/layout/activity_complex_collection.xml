@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:backgroundTint="@color/design_default_color_on_primary">
@@ -77,5 +76,16 @@ android:backgroundTint="@color/design_default_color_on_primary">
         app:layout_constraintEnd_toEndOf="@+id/bBack"
         app:layout_constraintStart_toStartOf="@+id/bBack"
         app:layout_constraintTop_toBottomOf="@+id/bBack" />
+
+    <ImageButton
+        android:id="@+id/ibSetAlarm"
+        android:layout_width="80dp"
+        android:layout_height="0dp"
+        android:background="@android:drawable/list_selector_background"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/bPop"
+        app:layout_constraintEnd_toStartOf="@+id/bBack"
+        app:layout_constraintTop_toTopOf="@+id/bBack"
+        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
