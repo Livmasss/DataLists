@@ -19,7 +19,7 @@ import java.util.LinkedList
 
 abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val context: Context, val dataModel: DataModel)
     : Adapter<ListItem>,
-    RecyclerView.Adapter<ItemAdapter.ItemHolder>() {
+    RecyclerView.Adapter<ItemAdapter.ItemHolder>(){
 
     val db = MainDB.getDB(context)
 
@@ -50,6 +50,7 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
     }
 
     abstract fun pop(): ListItem?
+    abstract fun getItem(): ListItem?
 
     override fun onDeleteClickListener(position: Int) {
         db.deleteItem(dataSet[position])

@@ -3,7 +3,7 @@ package com.livmas.itertable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.livmas.itertable.entities.items.CollectionItem
-import java.util.Date
+import java.util.Calendar
 
 open class DataModel: ViewModel() {
     val newCollection: MutableLiveData<CollectionItem> by lazy {
@@ -27,7 +27,7 @@ open class DataModel: ViewModel() {
         MutableLiveData<String>()
     }
 
-    val alertDate: MutableLiveData<Date> by lazy {
-        MutableLiveData<Date>()
+    val alertCalendar: MutableLiveData<Calendar> by lazy {
+        MutableLiveData<Calendar>()
     }
 }

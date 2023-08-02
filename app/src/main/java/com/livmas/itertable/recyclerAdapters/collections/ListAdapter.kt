@@ -9,6 +9,10 @@ import java.util.LinkedList
 class ListAdapter(context: Context, dataModel: DataModel):
         ItemAdapter(LinkedList<ListItem>(), context, dataModel){
         override fun pop(): ListItem? {
+                return getItem()
+        }
+
+        override fun getItem(): ListItem? {
                 if (isEmpty())
                         return null
 

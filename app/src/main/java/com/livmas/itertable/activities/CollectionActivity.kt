@@ -1,7 +1,9 @@
 package com.livmas.itertable.activities
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -28,11 +30,12 @@ abstract class CollectionActivity: AppCompatActivity() {
         adapter.dbUpdate()
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         db = MainDB.getDB(this)
-        collInfo = intent.getParcelableExtra("collection")!!
+        collInfo = intent.getParcelableExtra("collection", CollectionParcelable::class.java)!!
 
         initList()
         setObservers()
