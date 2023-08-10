@@ -12,6 +12,11 @@ import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
 import com.livmas.itertable.dialogs.MyTimePicker
 import com.livmas.itertable.entities.CollectionType
+import com.livmas.itertable.events.AlarmEvent
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
 
 abstract class ComplexCollectionActivity: CollectionActivity() {
     protected lateinit var binding: ActivityComplexCollectionBinding
@@ -33,16 +38,28 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
             bBack.setOnClickListener {
                 finish()
             }
-            ibSetAlarm.setOnClickListener(alarmOnClickListener())
+            ibSetAlarm.setOnClickListener(
+                alarmOnClickListener()
+            )
         }
 
         initRecycler(binding.rvContent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
     }
 
     private fun alarmOnClickListener(): View.OnClickListener {
         return View.OnClickListener {
             MyTimePicker(this, dataModel.alertCalendar).show()
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onAlarmEvent(event: AlarmEvent) {
+        adapter.pop()
     }
 
     override fun setObservers() {
@@ -52,7 +69,8 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
             alertCalendar.observe(this@ComplexCollectionActivity) { calendar ->
                 val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
-                val intent = Intent(this@ComplexCollectionActivity, NotificationReceiver::class.java)
+                val intent = Intent(
+                    this@ComplexCollectionActivity, NotificationReceiver::class.java)
                     .putExtra("item", adapter.getItem())
                     .putExtra("collection", collInfo)
 
@@ -63,9 +81,11 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                     PendingIntent.FLAG_IMMUTABLE
                 )
 
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP,
                     calendar.timeInMillis,
-                    pendingIntent)
+                    pendingIntent
+                )
             }
         }
     }

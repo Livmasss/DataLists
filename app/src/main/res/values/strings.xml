@@ -33,4 +33,7 @@
     <string name="name">Name</string>
     <string name="list_item">List Item</string>
     <string name="colon">%1$s:</string>
+
+    <!-- Broadcasts -->
+    <string name="broadcast_alarm">com.livmas.itertable.broadcast_alarm</string>
 </resources>
