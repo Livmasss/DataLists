@@ -22,8 +22,9 @@ data class ListItem(
         parcel.readString().orEmpty(),
         parcel.readInt(),
         parcel.readInt()
-    ) {
-    }
+    )
+    constructor(): this(
+        0, "", 0, 0)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)

@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 abstract class ComplexCollectionActivity: CollectionActivity() {
     companion object {
-        var isActive = false
+        var activeCollectionId = 0
     }
 
     protected lateinit var binding: ActivityComplexCollectionBinding
@@ -53,13 +53,13 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
-        isActive = true
+        activeCollectionId = collInfo.id!!
     }
 
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
-        isActive = false
+        activeCollectionId = 0
     }
 
     private fun alarmOnClickListener(): View.OnClickListener {
@@ -82,12 +82,11 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
 
                 val intent = Intent(
                     this@ComplexCollectionActivity, NotificationReceiver::class.java)
-                    .putExtra("item", adapter.getItem())
                     .putExtra("collection", collInfo)
 
                 val pendingIntent = PendingIntent.getBroadcast(
                     this@ComplexCollectionActivity,
-                    0,
+                    collInfo.id!!,
                     intent,
                     PendingIntent.FLAG_IMMUTABLE
                 )
