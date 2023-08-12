@@ -115,13 +115,22 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
         startActivity(context, intent, null)
     }
 
+    override fun notifiedAdd(item: CollectionItem) {
+        add(item)
+        notifyItemInserted(itemCount - 1)
+    }
+
     override fun onDeleteClickListener(position: Int) {
         db.deleteCollection(dataSet[position])
-        remove(position)
+        notifiedRemove(position)
     }
 
     override fun remove(position: Int) {
         dataSet.removeAt(position)
+    }
+
+    override fun notifiedRemove(position: Int) {
+        remove(position)
 
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, dataSet.size)

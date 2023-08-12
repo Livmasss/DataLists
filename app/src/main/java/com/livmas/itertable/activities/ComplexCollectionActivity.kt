@@ -19,6 +19,10 @@ import org.greenrobot.eventbus.ThreadMode
 
 
 abstract class ComplexCollectionActivity: CollectionActivity() {
+    companion object {
+        var isActive = false
+    }
+
     protected lateinit var binding: ActivityComplexCollectionBinding
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -49,6 +53,13 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
+        isActive = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+        isActive = false
     }
 
     private fun alarmOnClickListener(): View.OnClickListener {

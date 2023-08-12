@@ -19,11 +19,11 @@ class StackAdapter(context: Context, dataModel: DataModel):
         return dataSet[0]
     }
 
-    override fun remove(position: Int) {
-        dataSet.removeAt(position)
+    override fun notifiedRemove(position: Int) {
+        remove(position)
 
-        updateRangeNumbers(0, position)
         notifyItemRemoved(position)
+        updateRangeNumbers(0, position)
         notifyItemRangeChanged(0, position)
     }
 

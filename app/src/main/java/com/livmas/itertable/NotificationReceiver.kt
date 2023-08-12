@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.livmas.itertable.activities.ComplexCollectionActivity
 import com.livmas.itertable.entities.items.ListItem
 import com.livmas.itertable.events.AlarmEvent
 import org.greenrobot.eventbus.EventBus
@@ -24,6 +25,7 @@ class NotificationReceiver: BroadcastReceiver() {
             Toast.LENGTH_SHORT).show()
         Log.d("alert", item.name)
 
-        EventBus.getDefault().post(AlarmEvent())
+        if (ComplexCollectionActivity.isActive)
+            EventBus.getDefault().post(AlarmEvent())
     }
 }

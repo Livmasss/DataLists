@@ -16,6 +16,7 @@ open class QueueAdapter(context: Context, dataModel: DataModel):
         onDeleteClickListener(0)
         return toReturn
     }
+
     override fun getItem(): ListItem {
         return dataSet[0]
     }

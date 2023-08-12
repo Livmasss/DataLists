@@ -2,8 +2,10 @@ package com.livmas.itertable.recyclerAdapters
 
 interface Adapter<T> {
     fun add(item: T)
+    fun notifiedAdd(item: T)
     fun onDeleteClickListener(position: Int)
     fun remove(position: Int)
+    fun notifiedRemove(position: Int)
     fun setItemData(position: Int, name: String)
     fun at(position: Int): T
 

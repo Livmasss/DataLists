@@ -17,6 +17,7 @@ import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.items.ListItem
 import com.livmas.itertable.itemTouchCallbacks.ItemTouchCallback
 import com.livmas.itertable.recyclerAdapters.ItemAdapter
+import org.greenrobot.eventbus.EventBus
 
 abstract class CollectionActivity: AppCompatActivity() {
 
@@ -62,7 +63,7 @@ abstract class CollectionActivity: AppCompatActivity() {
             val data = db.getDao().getCollItems(collInfo.id!!)
             data.forEach { item ->
                 adapter.apply {
-                    add(item)
+                    notifiedAdd(item)
                 }
             }
         }.start()
@@ -81,8 +82,7 @@ abstract class CollectionActivity: AppCompatActivity() {
 
             if (item != null) {
                 adapter.apply {
-                    add(item)
-                    notifyItemInserted(itemCount - 1)
+                    notifiedAdd(item)
                 }
                 Thread {
                     val id = db.getDao().insertItem(item)

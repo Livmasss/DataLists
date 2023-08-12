@@ -44,6 +44,11 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
         dataSet.add(item)
     }
 
+    override fun notifiedAdd(item: ListItem) {
+        add(item)
+        notifyItemInserted(itemCount - 1)
+    }
+
     fun insert(position: Int, item: ListItem) {
         dataSet.add(position, item)
         notifyItemInserted(position)
@@ -54,18 +59,22 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
 
     override fun onDeleteClickListener(position: Int) {
         db.deleteItem(dataSet[position])
-        remove(position)
+        notifiedRemove(position)
     }
 
     override fun remove(position: Int) {
         dataSet.removeAt(position)
+    }
 
-        updateRangeNumbers(position, itemCount)
+    override fun notifiedRemove(position: Int) {
+        remove(position)
+
         notifyItemRemoved(position)
+        updateRangeNumbers(position, itemCount)
         notifyItemRangeChanged(position, itemCount)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemAdapter.ItemHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.list_item, parent, false)
         return ItemHolder(view)
