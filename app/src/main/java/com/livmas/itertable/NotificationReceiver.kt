@@ -93,12 +93,6 @@ class NotificationReceiver: BroadcastReceiver() {
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
                 Log.i("notification", "Please, enable notifications for application in settings!")
                 return@Thread
             }

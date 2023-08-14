@@ -25,6 +25,7 @@
     <string name="empty_collection">No items in collection!</string>
     <string name="new_item_dialog">Create new item</string>
     <string name="new_coll_dialog">Create new collection</string>
+    <string name="set_alarm_dialog">Set alarm for this collection. It will pop an element at concrete time.</string>
 
     <!-- Content -->
     <string name="collection_name">Your collections:</string>
@@ -40,4 +41,7 @@
     <!-- Notifications -->
     <string name="pop_notification">Pop occurred in collection %1$s</string>
     <string name="notification_channel_description">Channel to send app notifications</string>
+    <string name="repeating">Repeating</string>
+    <string name="repeat_every">Repeat Every:</string>
+    <string name="start_at">Start at:</string>
 </resources>

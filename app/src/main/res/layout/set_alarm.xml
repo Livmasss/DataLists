@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/start_at"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TimePicker
+        android:id="@+id/tpStart"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:timePickerMode="spinner"
+        app:layout_constraintEnd_toEndOf="@+id/dpStart"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/dpStart"
+        app:layout_constraintTop_toBottomOf="@+id/dpStart" />
+
+    <DatePicker
+        android:id="@+id/dpStart"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        app:layout_constraintEnd_toEndOf="@+id/tvStart"
+        app:layout_constraintStart_toStartOf="@+id/tvStart"
+        app:layout_constraintTop_toBottomOf="@+id/tvStart" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sRepeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/repeating"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvRepeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/repeat_every"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/tpStart"
+        app:layout_constraintStart_toStartOf="@+id/tpStart"
+        app:layout_constraintTop_toBottomOf="@+id/tpStart" />
+
+    <TimePicker
+        android:id="@+id/tpRepeat"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:timePickerMode="spinner"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/tvRepeat"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/tvRepeat"
+        app:layout_constraintTop_toBottomOf="@+id/tvRepeat" />
+
+</LinearLayout>

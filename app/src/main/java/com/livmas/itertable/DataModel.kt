@@ -27,7 +27,10 @@ open class DataModel: ViewModel() {
         MutableLiveData<String>()
     }
 
-    val alertCalendar: MutableLiveData<Calendar> by lazy {
+    val startAlarmCalendar: MutableLiveData<Calendar> by lazy {
+        MutableLiveData<Calendar>()
+    }
+    val repeatAlarmCalendar: MutableLiveData<Calendar> by lazy {
         MutableLiveData<Calendar>()
     }
 }

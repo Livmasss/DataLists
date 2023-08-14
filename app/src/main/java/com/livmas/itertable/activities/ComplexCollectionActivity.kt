@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import com.livmas.itertable.NotificationReceiver
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
-import com.livmas.itertable.dialogs.MyTimePicker
+import com.livmas.itertable.dialogs.SetAlarmDialog
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.events.AlarmEvent
 import org.greenrobot.eventbus.EventBus
@@ -64,7 +64,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
 
     private fun alarmOnClickListener(): View.OnClickListener {
         return View.OnClickListener {
-            MyTimePicker(this, dataModel.alertCalendar).show()
+            SetAlarmDialog().show(supportFragmentManager, "alarm")
         }
     }
 
@@ -77,7 +77,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
         super.setObservers()
 
         dataModel.apply {
-            alertCalendar.observe(this@ComplexCollectionActivity) { calendar ->
+            startAlarmCalendar.observe(this@ComplexCollectionActivity) { startCalendar ->
                 val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
                 val intent = Intent(
@@ -91,11 +91,22 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                     PendingIntent.FLAG_IMMUTABLE
                 )
 
-                alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar.timeInMillis,
-                    pendingIntent
-                )
+                val repeat = repeatAlarmCalendar.value
+                if (repeat == null) {
+                    alarmManager.set(
+                        AlarmManager.RTC_WAKEUP,
+                        startCalendar.timeInMillis,
+                        pendingIntent
+                    )
+                }
+                else {
+                    alarmManager.setRepeating(
+                        AlarmManager.RTC_WAKEUP,
+                        startCalendar.timeInMillis,
+                        repeat.timeInMillis,
+                        pendingIntent
+                    )
+                }
             }
         }
     }
