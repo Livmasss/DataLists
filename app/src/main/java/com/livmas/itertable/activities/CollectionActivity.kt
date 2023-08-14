@@ -17,7 +17,6 @@ import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.items.ListItem
 import com.livmas.itertable.itemTouchCallbacks.ItemTouchCallback
 import com.livmas.itertable.recyclerAdapters.ItemAdapter
-import org.greenrobot.eventbus.EventBus
 
 abstract class CollectionActivity: AppCompatActivity() {
 
@@ -38,8 +37,12 @@ abstract class CollectionActivity: AppCompatActivity() {
         db = MainDB.getDB(this)
         collInfo = intent.getParcelableExtra("collection", CollectionParcelable::class.java)!!
 
-        initList()
         setObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initList()
     }
 
     protected fun initRecycler(rv: RecyclerView) {
@@ -63,7 +66,7 @@ abstract class CollectionActivity: AppCompatActivity() {
             val data = db.getDao().getCollItems(collInfo.id!!)
             data.forEach { item ->
                 adapter.apply {
-                    notifiedAdd(item)
+                    add(item)
                 }
             }
         }.start()

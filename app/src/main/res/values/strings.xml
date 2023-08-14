@@ -36,4 +36,8 @@
 
     <!-- Broadcasts -->
     <string name="broadcast_alarm">com.livmas.itertable.broadcast_alarm</string>
+    
+    <!-- Notifications -->
+    <string name="pop_notification">Pop occurred in collection %1$s</string>
+    <string name="notification_channel_description">Channel to send app notifications</string>
 </resources>
