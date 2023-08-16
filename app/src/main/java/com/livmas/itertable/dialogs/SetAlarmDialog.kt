@@ -55,7 +55,7 @@ class SetAlarmDialog: DialogFragment() {
 
     private fun confirmPick() {
         val start = Calendar.getInstance()
-        var repeat: Calendar? = Calendar.getInstance()
+        var repeat: Long
         binding.apply {
             start.set(
                 dpStart.year,
@@ -65,19 +65,7 @@ class SetAlarmDialog: DialogFragment() {
                 tpStart.minute,
                 0
             )
-            if (tpRepeat.hour + tpRepeat.minute == 0) {
-                repeat = null
-            }
-            else {
-                repeat!!.set(
-                    0,
-                    0,
-                    0,
-                    tpRepeat.hour,
-                    tpRepeat.minute,
-                    0
-                )
-            }
+            repeat = ((tpRepeat.hour*60 + tpRepeat.minute) * 60000).toLong()
         }
         dataModel.repeatAlarmCalendar.value = repeat
         dataModel.startAlarmCalendar.value = start

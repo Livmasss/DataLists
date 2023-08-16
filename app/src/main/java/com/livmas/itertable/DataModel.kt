@@ -30,7 +30,7 @@ open class DataModel: ViewModel() {
     val startAlarmCalendar: MutableLiveData<Calendar> by lazy {
         MutableLiveData<Calendar>()
     }
-    val repeatAlarmCalendar: MutableLiveData<Calendar> by lazy {
-        MutableLiveData<Calendar>()
+    val repeatAlarmCalendar: MutableLiveData<Long> by lazy {
+        MutableLiveData<Long>()
     }
 }

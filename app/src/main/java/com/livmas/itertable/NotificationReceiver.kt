@@ -27,7 +27,9 @@ class NotificationReceiver: BroadcastReceiver() {
     private lateinit var coll: CollectionParcelable
     private lateinit var item: ListItem
     private lateinit var context: Context
+
     private val channelId = "DataSets Channel"
+    private val tag = "alarm"
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -51,7 +53,7 @@ class NotificationReceiver: BroadcastReceiver() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun inactivePop() {
-        Thread {
+         Thread {
             val dataSet = LinkedList(coll.id?.let { db.getDao().getCollItems(it) }.orEmpty())
 
             when(CollectionType.valueOf(coll.typeId)) {
@@ -84,7 +86,7 @@ class NotificationReceiver: BroadcastReceiver() {
                     }
                 }
                 else -> {
-                    Log.d("alert", "Wrong collection type!")
+                    Log.d(tag, "Wrong collection type!")
                 }
             }
 
@@ -93,10 +95,11 @@ class NotificationReceiver: BroadcastReceiver() {
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                Log.i("notification", "Please, enable notifications for application in settings!")
+                Log.i(tag, "Please, enable notifications for application in settings!")
                 return@Thread
             }
             sendNotification()
+            Log.i(tag, "Notification sent")
         }.start()
 
     }

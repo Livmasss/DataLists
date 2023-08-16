@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import com.livmas.itertable.NotificationReceiver
@@ -71,6 +72,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onAlarmEvent(event: AlarmEvent) {
         adapter.pop()
+        Log.i("alarm", "Alarm event occurred.")
     }
 
     override fun setObservers() {
@@ -92,7 +94,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                 )
 
                 val repeat = repeatAlarmCalendar.value
-                if (repeat == null) {
+                if (repeat == null || repeat == (0).toLong()) {
                     alarmManager.set(
                         AlarmManager.RTC_WAKEUP,
                         startCalendar.timeInMillis,
@@ -103,7 +105,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                     alarmManager.setRepeating(
                         AlarmManager.RTC_WAKEUP,
                         startCalendar.timeInMillis,
-                        repeat.timeInMillis,
+                        repeat,
                         pendingIntent
                     )
                 }
