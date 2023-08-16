@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.livmas.itertable.databinding.FragmentAlarmBinding
 
 class AlarmFragment : Fragment() {
-    private lateinit var binding: FragmentAlarmBinding
+    lateinit var binding: FragmentAlarmBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -36,6 +36,8 @@
     <string name="name">Name</string>
     <string name="list_item">List Item</string>
     <string name="colon">%1$s:</string>
+    <string name="time_template">%1$d:%2$d</string>
+    <string name="date_template">%1$d.%2$d.%3$d</string>
     <string name="active">Active</string>
     <string name="inactive">Inactive</string>
     <string name="nul">Null</string>

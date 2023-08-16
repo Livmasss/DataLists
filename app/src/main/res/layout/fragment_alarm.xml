@@ -35,6 +35,17 @@
         app:layout_constraintTop_toBottomOf="@+id/tvStartHint" />
 
     <TextView
+        android:id="@+id/tvStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/nul"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStartTime"
+        app:layout_constraintStart_toEndOf="@+id/tvStartTime"
+        app:layout_constraintTop_toBottomOf="@+id/tvStartHint" />
+
+    <TextView
         android:id="@+id/tvRepeatHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvStartTime" />
 
     <TextView
-        android:id="@+id/tvStartTime2"
+        android:id="@+id/tvRepeatTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -57,7 +68,7 @@
         android:id="@+id/bClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:text="@string/close"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,10 +78,9 @@
         android:id="@+id/bCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:text="@string/cancel"
-        app:layout_constraintEnd_toEndOf="@+id/bClose"
-        app:layout_constraintTop_toBottomOf="@+id/bClose" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvRepeatTime"
+        app:layout_constraintEnd_toEndOf="@+id/bClose" />
 
     <Button
         android:id="@+id/bReset"

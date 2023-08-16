@@ -17,7 +17,7 @@ import com.livmas.itertable.fragments.AlarmFragment
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
+import java.util.Calendar
 
 abstract class ComplexCollectionActivity: CollectionActivity() {
     companion object {
@@ -83,6 +83,17 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
 
         dataModel.apply {
             startAlarmCalendar.observe(this@ComplexCollectionActivity) { startCalendar ->
+
+                val fragment = binding.fcContainer.getFragment<AlarmFragment>()
+                fragment.binding.apply {
+                    tvIsActive.text = getString(R.string.active)
+                    tvStartTime.text = getString(R.string.time_template,
+                        startCalendar.get(Calendar.HOUR_OF_DAY), startCalendar.get(Calendar.MINUTE))
+                    tvStartDate.text = getString(R.string.date_template,
+                        startCalendar.get(Calendar.DATE), startCalendar.get(Calendar.MONTH),
+                        startCalendar.get(Calendar.YEAR))
+                }
+
                 val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
                 val intent = Intent(
@@ -103,6 +114,8 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                         startCalendar.timeInMillis,
                         pendingIntent
                     )
+
+                    fragment.binding.tvRepeatTime.text = getString(R.string.nul)
                 }
                 else {
                     alarmManager.setRepeating(
@@ -111,6 +124,16 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                         repeat,
                         pendingIntent
                     )
+
+                    var minutes: Int
+                    val hours: Int
+                    with(repeat/1000) {
+                        minutes = (this/60).toInt()
+                        hours = minutes/60
+                        minutes %= 60
+                    }
+                    fragment.binding.tvRepeatTime.text = getString(
+                        R.string.time_template, hours, minutes)
                 }
             }
         }
