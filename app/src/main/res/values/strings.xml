@@ -11,6 +11,8 @@
     <string name="edit_coll_dialog">Rename</string>
     <string name="next">Next</string>
     <string name="edit_item">Edit item</string>
+    <string name="reset">Reset</string>
+    <string name="close">Close</string>
 
     <!-- Collection names. -->
     <string name="list">List</string>
@@ -34,10 +36,14 @@
     <string name="name">Name</string>
     <string name="list_item">List Item</string>
     <string name="colon">%1$s:</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
+    <string name="nul">Null</string>
+
 
     <!-- Broadcasts -->
     <string name="broadcast_alarm">com.livmas.itertable.broadcast_alarm</string>
-    
+
     <!-- Notifications -->
     <string name="pop_notification">Pop occurred in collection %1$s</string>
     <string name="notification_channel_description">Channel to send app notifications</string>

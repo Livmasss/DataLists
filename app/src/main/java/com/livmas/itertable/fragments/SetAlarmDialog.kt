@@ -1,4 +1,4 @@
-package com.livmas.itertable.dialogs
+package com.livmas.itertable.fragments
 
 import android.app.AlertDialog.Builder
 import android.app.Dialog

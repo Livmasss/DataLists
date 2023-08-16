@@ -11,9 +11,9 @@ import androidx.annotation.RequiresApi
 import com.livmas.itertable.NotificationReceiver
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
-import com.livmas.itertable.dialogs.SetAlarmDialog
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.events.AlarmEvent
+import com.livmas.itertable.fragments.SetAlarmDialog
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -65,6 +65,10 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
 
     private fun alarmOnClickListener(): View.OnClickListener {
         return View.OnClickListener {
+//            val fragment = AlarmFragment()
+//            supportFragmentManager.beginTransaction()
+//                .add(R.id.fcContainer, fragment, "alarm")
+//                .commit()
             SetAlarmDialog().show(supportFragmentManager, "alarm")
         }
     }
