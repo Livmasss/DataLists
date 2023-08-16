@@ -26,6 +26,9 @@ class AlarmFragment : Fragment() {
             bClose.setOnClickListener {
                 root.visibility = View.GONE
             }
+            bReset.setOnClickListener {
+                SetAlarmDialog().show(requireActivity().supportFragmentManager, "alarm")
+            }
         }
     }
 }

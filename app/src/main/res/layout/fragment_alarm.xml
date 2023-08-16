@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvIsActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/inactive"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvStartHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/start_at"
+        app:layout_constraintStart_toStartOf="@+id/tvIsActive"
+        app:layout_constraintTop_toBottomOf="@+id/tvIsActive" />
+
+    <TextView
+        android:id="@+id/tvStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/nul"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="@+id/tvStartHint"
+        app:layout_constraintTop_toBottomOf="@+id/tvStartHint" />
+
+    <TextView
+        android:id="@+id/tvRepeatHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/repeat_every"
+        app:layout_constraintStart_toStartOf="@+id/tvIsActive"
+        app:layout_constraintTop_toBottomOf="@+id/tvStartTime" />
+
+    <TextView
+        android:id="@+id/tvStartTime2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/nul"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="@+id/tvStartHint"
+        app:layout_constraintTop_toBottomOf="@+id/tvRepeatHint" />
+
+    <Button
+        android:id="@+id/bClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/bCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toEndOf="@+id/bClose"
+        app:layout_constraintTop_toBottomOf="@+id/bClose" />
+
+    <Button
+        android:id="@+id/bReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="@string/reset"
+        app:layout_constraintBottom_toBottomOf="@+id/bCancel"
+        app:layout_constraintEnd_toStartOf="@+id/bCancel"
+        app:layout_constraintTop_toTopOf="@+id/bCancel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
