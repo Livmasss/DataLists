@@ -1,13 +1,15 @@
 package com.livmas.itertable.activities
 
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ActivityCollectionBinding
-import com.livmas.itertable.entities.CollectionType
 
 abstract class SimpleCollectionActivity: CollectionActivity() {
     protected lateinit var binding: ActivityCollectionBinding
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCollectionBinding.inflate(layoutInflater)
@@ -17,7 +19,7 @@ abstract class SimpleCollectionActivity: CollectionActivity() {
 
         binding.apply {
             tvTitle.text = resources.getString(R.string.colon, collInfo.name)
-            tvType.text = CollectionType.valueOf(collInfo.typeId).toString()
+            tvType.text = collInfo.type.toString()
 
             fabNewItem.setOnClickListener {
                 startNewListDialog()

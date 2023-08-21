@@ -15,8 +15,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.livmas.itertable.activities.ComplexCollectionActivity
-import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.CollectionType
+import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.entities.items.ListItem
 import com.livmas.itertable.events.AlarmEvent
 import org.greenrobot.eventbus.EventBus
@@ -24,7 +24,7 @@ import java.util.LinkedList
 
 class NotificationReceiver: BroadcastReceiver() {
     private lateinit var db: MainDB
-    private lateinit var coll: CollectionParcelable
+    private lateinit var coll: CollectionItem
     private lateinit var item: ListItem
     private lateinit var context: Context
 
@@ -36,7 +36,7 @@ class NotificationReceiver: BroadcastReceiver() {
         db = MainDB.getDB(context!!)
         this.context = context
 
-        coll = intent?.getParcelableExtra("collection", CollectionParcelable::class.java)!!
+        coll = intent?.getParcelableExtra("collection", CollectionItem::class.java)!!
         val activeId = ComplexCollectionActivity.activeCollectionId
 
         if (activeId == coll.id)
@@ -56,7 +56,7 @@ class NotificationReceiver: BroadcastReceiver() {
          Thread {
             val dataSet = LinkedList(coll.id?.let { db.getDao().getCollItems(it) }.orEmpty())
 
-            when(CollectionType.valueOf(coll.typeId)) {
+            when(coll.type) {
                 CollectionType.Queue -> {
                     item = dataSet[0]
 

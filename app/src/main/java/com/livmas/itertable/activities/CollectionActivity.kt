@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
+import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.fragments.EditItemDialog
 import com.livmas.itertable.fragments.NewListDialog
-import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.items.ListItem
 import com.livmas.itertable.itemTouchCallbacks.ItemTouchCallback
 import com.livmas.itertable.recyclerAdapters.ItemAdapter
@@ -23,7 +23,7 @@ abstract class CollectionActivity: AppCompatActivity() {
     protected val dataModel: DataModel by viewModels()
     private lateinit var db: MainDB
     protected abstract var adapter: ItemAdapter
-    protected lateinit var collInfo: CollectionParcelable
+    protected lateinit var collInfo: CollectionItem
 
     override fun onStop() {
         super.onStop()
@@ -35,7 +35,7 @@ abstract class CollectionActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         db = MainDB.getDB(this)
-        collInfo = intent.getParcelableExtra("collection", CollectionParcelable::class.java)!!
+        collInfo = intent.getParcelableExtra("collection", CollectionItem::class.java)!!
 
         setObservers()
     }

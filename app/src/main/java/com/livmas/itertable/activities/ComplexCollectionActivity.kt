@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi
 import com.livmas.itertable.NotificationReceiver
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
-import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.events.AlarmEvent
 import com.livmas.itertable.fragments.AlarmFragment
 import org.greenrobot.eventbus.EventBus
@@ -35,7 +34,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
 
         binding.apply {
             tvTitle.text = resources.getString(R.string.colon, collInfo.name)
-            tvType.text = CollectionType.valueOf(collInfo.typeId).toString()
+            tvType.text = collInfo.type.toString()
 
             fabNewItem.setOnClickListener {
                 startNewListDialog()

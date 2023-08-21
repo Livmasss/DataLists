@@ -17,7 +17,6 @@ import com.livmas.itertable.activities.collectionActivities.ListActivity
 import com.livmas.itertable.activities.collectionActivities.QueueActivity
 import com.livmas.itertable.activities.collectionActivities.StackActivity
 import com.livmas.itertable.databinding.CollectionItemBinding
-import com.livmas.itertable.entities.CollectionParcelable
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.items.CollectionItem
 import java.util.ArrayList
@@ -111,7 +110,7 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
                 ListActivity::class.java}
         }
             )
-        intent.putExtra("collection", CollectionParcelable(list.id, list.name, list.type.ordinal))
+        intent.putExtra("collection", CollectionItem(list.id, list.name, list.type, list.number))
         startActivity(context, intent, null)
     }
 
