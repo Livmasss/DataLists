@@ -144,10 +144,16 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                         R.string.time_template, hours, minutes)
                 }
 
+                val alarm = Alarm(collInfo.id!!, startCalendar.timeInMillis, repeat, true)
+
                 setAlarm(
-                    Alarm(null, collInfo.id!!, startCalendar.timeInMillis, repeat),
+                    alarm,
                     alarmManager,
                     pendingIntent)
+
+                Thread{
+                    db.getDao().insertAlarm(alarm)
+                }.start()
             }
         }
     }

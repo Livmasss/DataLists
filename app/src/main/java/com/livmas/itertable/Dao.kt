@@ -31,4 +31,6 @@ interface Dao {
     fun insertAlarm(alarm: Alarm)
     @Query("SELECT * FROM alarms")
     fun getAllAlarms(): List<Alarm>
+    @Update
+    fun updateAlarm(alarm: Alarm)
 }

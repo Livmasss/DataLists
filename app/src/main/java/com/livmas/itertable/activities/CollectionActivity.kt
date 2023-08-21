@@ -21,7 +21,7 @@ import com.livmas.itertable.recyclerAdapters.ItemAdapter
 abstract class CollectionActivity: AppCompatActivity() {
 
     protected val dataModel: DataModel by viewModels()
-    private lateinit var db: MainDB
+    protected lateinit var db: MainDB
     protected abstract var adapter: ItemAdapter
     protected lateinit var collInfo: CollectionItem
 

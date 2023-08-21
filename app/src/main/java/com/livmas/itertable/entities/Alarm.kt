@@ -6,12 +6,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "alarms")
 data class Alarm(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int?,
-    @ColumnInfo(name = "collection_id")
+    @PrimaryKey
     val collectionId: Int,
     @ColumnInfo("last_call")
     val lastCall: Long,
     @ColumnInfo("repeat")
-    val repeat: Long
+    val repeat: Long,
+    @ColumnInfo("is_active", defaultValue = false.toString())
+    val isActive: Boolean
 )

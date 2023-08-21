@@ -1,7 +1,6 @@
 package com.livmas.itertable
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -11,8 +10,7 @@ import com.livmas.itertable.entities.ListItem
 import java.lang.IllegalStateException
 
 @Database(entities = [CollectionItem::class, ListItem::class, Alarm::class],
-    autoMigrations = [AutoMigration(12, 13)],
-    version = 13)
+    version = 2)
 abstract class MainDB: RoomDatabase() {
     abstract fun getDao(): Dao
     companion object {
@@ -21,7 +19,8 @@ abstract class MainDB: RoomDatabase() {
                 context.applicationContext,
                 MainDB::class.java,
                 "MainDB"
-            ).build()
+            ).fallbackToDestructiveMigration()
+                .build()
         }
     }
 
