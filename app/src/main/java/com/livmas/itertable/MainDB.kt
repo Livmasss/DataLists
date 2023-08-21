@@ -6,8 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.livmas.itertable.entities.Alarm
-import com.livmas.itertable.entities.items.CollectionItem
-import com.livmas.itertable.entities.items.ListItem
+import com.livmas.itertable.entities.CollectionItem
+import com.livmas.itertable.entities.ListItem
 import java.lang.IllegalStateException
 
 @Database(entities = [CollectionItem::class, ListItem::class, Alarm::class],

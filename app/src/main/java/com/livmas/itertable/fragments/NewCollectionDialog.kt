@@ -12,7 +12,7 @@ import com.livmas.itertable.DataModel
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.CollectionInputDialogBinding
 import com.livmas.itertable.entities.CollectionType
-import com.livmas.itertable.entities.items.CollectionItem
+import com.livmas.itertable.entities.CollectionItem
 
 class NewCollectionDialog: DialogFragment() {
     private val dataModel: DataModel by activityViewModels()

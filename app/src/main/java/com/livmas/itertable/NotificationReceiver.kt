@@ -16,8 +16,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.livmas.itertable.activities.ComplexCollectionActivity
 import com.livmas.itertable.entities.CollectionType
-import com.livmas.itertable.entities.items.CollectionItem
-import com.livmas.itertable.entities.items.ListItem
+import com.livmas.itertable.entities.CollectionItem
+import com.livmas.itertable.entities.ListItem
 import com.livmas.itertable.events.AlarmEvent
 import org.greenrobot.eventbus.EventBus
 import java.util.LinkedList

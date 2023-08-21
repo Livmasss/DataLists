@@ -11,7 +11,7 @@ import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ListItemBinding
-import com.livmas.itertable.entities.items.ListItem
+import com.livmas.itertable.entities.ListItem
 import java.lang.Integer.max
 import java.lang.Integer.min
 import java.util.Collections
@@ -74,7 +74,7 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
         notifyItemRangeChanged(position, itemCount)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemAdapter.ItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.list_item, parent, false)
         return ItemHolder(view)

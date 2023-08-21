@@ -5,8 +5,9 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.livmas.itertable.entities.items.CollectionItem
-import com.livmas.itertable.entities.items.ListItem
+import com.livmas.itertable.entities.Alarm
+import com.livmas.itertable.entities.CollectionItem
+import com.livmas.itertable.entities.ListItem
 
 @Dao
 interface Dao {
@@ -26,4 +27,8 @@ interface Dao {
     fun updateColl(item: CollectionItem)
     @Update
     fun updateItem(item: ListItem)
+    @Insert
+    fun insertAlarm(alarm: Alarm)
+    @Query("SELECT * FROM alarms")
+    fun getAllAlarms(): List<Alarm>
 }

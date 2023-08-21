@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
-import com.livmas.itertable.entities.items.CollectionItem
+import com.livmas.itertable.entities.CollectionItem
 import com.livmas.itertable.fragments.EditItemDialog
 import com.livmas.itertable.fragments.NewListDialog
-import com.livmas.itertable.entities.items.ListItem
+import com.livmas.itertable.entities.ListItem
 import com.livmas.itertable.itemTouchCallbacks.ItemTouchCallback
 import com.livmas.itertable.recyclerAdapters.ItemAdapter
 

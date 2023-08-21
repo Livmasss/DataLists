@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.databinding.ActivityCollectionBinding
+import com.livmas.itertable.entities.CollectionItem
 import com.livmas.itertable.fragments.EditItemDialog
 import com.livmas.itertable.fragments.NewCollectionDialog
-import com.livmas.itertable.entities.items.CollectionItem
 import com.livmas.itertable.itemTouchCallbacks.CollectionTouchCallback
 import com.livmas.itertable.recyclerAdapters.CollectionAdapter
 

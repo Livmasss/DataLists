@@ -1,4 +1,4 @@
-package com.livmas.itertable.entities.items
+package com.livmas.itertable.entities
 
 import android.os.Parcel
 import android.os.Parcelable

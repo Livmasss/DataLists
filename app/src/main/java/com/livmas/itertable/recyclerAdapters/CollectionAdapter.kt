@@ -18,7 +18,7 @@ import com.livmas.itertable.activities.collectionActivities.QueueActivity
 import com.livmas.itertable.activities.collectionActivities.StackActivity
 import com.livmas.itertable.databinding.CollectionItemBinding
 import com.livmas.itertable.entities.CollectionType
-import com.livmas.itertable.entities.items.CollectionItem
+import com.livmas.itertable.entities.CollectionItem
 import java.util.ArrayList
 import java.util.Collections
 

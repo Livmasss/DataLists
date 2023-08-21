@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi
 import com.livmas.itertable.NotificationReceiver
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
+import com.livmas.itertable.entities.Alarm
 import com.livmas.itertable.events.AlarmEvent
 import com.livmas.itertable.fragments.AlarmFragment
 import org.greenrobot.eventbus.EventBus
@@ -21,6 +22,25 @@ import java.util.Calendar
 abstract class ComplexCollectionActivity: CollectionActivity() {
     companion object {
         var activeCollectionId = 0
+        fun setAlarm(alarm: Alarm, manager: AlarmManager, pendingIntent: PendingIntent) {
+            alarm.apply {
+                if (repeat == (0).toLong()) {
+                    manager.set(
+                        AlarmManager.RTC_WAKEUP,
+                        alarm.lastCall,
+                        pendingIntent
+                    )
+                }
+                else {
+                    manager.setRepeating(
+                        AlarmManager.RTC_WAKEUP,
+                        lastCall,
+                        repeat,
+                        pendingIntent
+                    )
+                }
+            }
+        }
     }
 
     protected lateinit var binding: ActivityComplexCollectionBinding
@@ -106,24 +126,13 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                     PendingIntent.FLAG_IMMUTABLE
                 )
 
-                val repeat = repeatAlarmCalendar.value
-                if (repeat == null || repeat == (0).toLong()) {
-                    alarmManager.set(
-                        AlarmManager.RTC_WAKEUP,
-                        startCalendar.timeInMillis,
-                        pendingIntent
-                    )
+                var repeat = repeatAlarmCalendar.value
 
+                if (repeat == null || repeat == (0).toLong()) {
                     fragment.binding.tvRepeatTime.text = getString(R.string.nul)
+                    repeat = 0
                 }
                 else {
-                    alarmManager.setRepeating(
-                        AlarmManager.RTC_WAKEUP,
-                        startCalendar.timeInMillis,
-                        repeat,
-                        pendingIntent
-                    )
-
                     var minutes: Int
                     val hours: Int
                     with(repeat/1000) {
@@ -134,6 +143,11 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                     fragment.binding.tvRepeatTime.text = getString(
                         R.string.time_template, hours, minutes)
                 }
+
+                setAlarm(
+                    Alarm(null, collInfo.id!!, startCalendar.timeInMillis, repeat),
+                    alarmManager,
+                    pendingIntent)
             }
         }
     }

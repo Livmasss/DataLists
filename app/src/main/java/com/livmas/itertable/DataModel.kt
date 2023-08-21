@@ -2,7 +2,7 @@ package com.livmas.itertable
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.livmas.itertable.entities.items.CollectionItem
+import com.livmas.itertable.entities.CollectionItem
 import java.util.Calendar
 
 open class DataModel: ViewModel() {
