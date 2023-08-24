@@ -34,9 +34,12 @@ class NotificationReceiver: BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onReceive(context: Context?, intent: Intent?) {
         db = MainDB.getDB(context!!)
-        this.context = context
+        this.context = context.applicationContext
 
-        coll = intent?.getParcelableExtra("collection", CollectionItem::class.java)!!
+        val extras = intent?.extras
+        if (extras != null) {
+            coll = extras.getParcelable("collection", CollectionItem::class.java)!!
+        }
         val activeId = ComplexCollectionActivity.activeCollectionId
 
         if (activeId == coll.id)

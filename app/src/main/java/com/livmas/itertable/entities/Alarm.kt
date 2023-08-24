@@ -12,6 +12,4 @@ data class Alarm(
     val lastCall: Long,
     @ColumnInfo("repeat")
     val repeat: Long,
-    @ColumnInfo("is_active", defaultValue = false.toString())
-    val isActive: Boolean
 )

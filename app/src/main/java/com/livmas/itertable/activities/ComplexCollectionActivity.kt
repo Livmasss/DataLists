@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.livmas.itertable.NotificationReceiver
 import com.livmas.itertable.R
@@ -18,6 +19,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.Calendar
+import kotlin.concurrent.thread
 
 abstract class ComplexCollectionActivity: CollectionActivity() {
     companion object {
@@ -86,7 +88,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
         return View.OnClickListener {
             val fragment = AlarmFragment()
             supportFragmentManager.beginTransaction()
-                .add(R.id.fcContainer, fragment, "alarm")
+                .replace(R.id.fcContainer, fragment, "alarm")
                 .commit()
         }
     }
@@ -116,14 +118,14 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                 val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
                 val intent = Intent(
-                    this@ComplexCollectionActivity, NotificationReceiver::class.java)
+                    this@ComplexCollectionActivity.applicationContext, NotificationReceiver::class.java)
                     .putExtra("collection", collInfo)
 
                 val pendingIntent = PendingIntent.getBroadcast(
-                    this@ComplexCollectionActivity,
+                    this@ComplexCollectionActivity.applicationContext,
                     collInfo.id!!,
                     intent,
-                    PendingIntent.FLAG_IMMUTABLE
+                    PendingIntent.FLAG_MUTABLE
                 )
 
                 var repeat = repeatAlarmCalendar.value
@@ -144,16 +146,22 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                         R.string.time_template, hours, minutes)
                 }
 
-                val alarm = Alarm(collInfo.id!!, startCalendar.timeInMillis, repeat, true)
+                thread {
+                    if (db.getDao().getAlarm(collInfo.id!!) != null) {
+                        runOnUiThread {
+                            Toast.makeText(this@ComplexCollectionActivity,
+                            R.string.alarm_already_set, Toast.LENGTH_LONG).show()
+                        }
+                        return@thread
+                    }
+                    val alarm = Alarm(collInfo.id!!, startCalendar.timeInMillis, repeat)
+                    setAlarm(
+                        alarm,
+                        alarmManager,
+                        pendingIntent)
 
-                setAlarm(
-                    alarm,
-                    alarmManager,
-                    pendingIntent)
-
-                Thread{
                     db.getDao().insertAlarm(alarm)
-                }.start()
+                }
             }
         }
     }

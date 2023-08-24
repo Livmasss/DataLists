@@ -1,9 +1,6 @@
 package com.livmas.itertable.activities
 
-import android.app.PendingIntent
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
-import com.livmas.itertable.NotificationReceiver
 import com.livmas.itertable.databinding.ActivityCollectionBinding
-import com.livmas.itertable.entities.Alarm
 import com.livmas.itertable.entities.CollectionItem
 import com.livmas.itertable.fragments.EditItemDialog
 import com.livmas.itertable.fragments.NewCollectionDialog
@@ -108,19 +103,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fixAlarms() {
-        for(i in db.getDao().getAllAlarms()) {
-            val isSet = isAlarmSet(i)
-            Log.d("alarm", isSet.toString())
-        }
-    }
-
-    private fun isAlarmSet(alarm: Alarm): Boolean {
-        val pi = PendingIntent.getBroadcast(
-            this, alarm.collectionId,
-            Intent(this@MainActivity, NotificationReceiver::class.java),
-            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        return pi != null
+//        for(i in db.getDao().getAllAlarms()) {
+//        }
     }
 }

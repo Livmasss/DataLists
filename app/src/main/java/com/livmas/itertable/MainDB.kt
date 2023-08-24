@@ -10,7 +10,7 @@ import com.livmas.itertable.entities.ListItem
 import java.lang.IllegalStateException
 
 @Database(entities = [CollectionItem::class, ListItem::class, Alarm::class],
-    version = 2)
+    version = 3)
 abstract class MainDB: RoomDatabase() {
     abstract fun getDao(): Dao
     companion object {

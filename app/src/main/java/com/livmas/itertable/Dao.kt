@@ -33,4 +33,8 @@ interface Dao {
     fun getAllAlarms(): List<Alarm>
     @Update
     fun updateAlarm(alarm: Alarm)
+    @Query("SELECT * FROM alarms WHERE collectionId = :collId")
+    fun getAlarm(collId: Int): Alarm?
+    @Delete
+    fun deleteAlarm(alarm: Alarm)
 }

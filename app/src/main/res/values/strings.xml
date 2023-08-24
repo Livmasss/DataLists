@@ -28,6 +28,7 @@
     <string name="new_item_dialog">Create new item</string>
     <string name="new_coll_dialog">Create new collection</string>
     <string name="set_alarm_dialog">Set alarm for this collection. It will pop an element at concrete time.</string>
+    <string name="alarm_already_set">Alarm for this collection already set!</string>
 
     <!-- Content -->
     <string name="collection_name">Your collections:</string>
@@ -41,7 +42,6 @@
     <string name="active">Active</string>
     <string name="inactive">Inactive</string>
     <string name="nul">Null</string>
-
 
     <!-- Broadcasts -->
     <string name="broadcast_alarm">com.livmas.itertable.broadcast_alarm</string>
