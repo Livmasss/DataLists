@@ -15,16 +15,19 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.livmas.itertable.activities.ComplexCollectionActivity
+import com.livmas.itertable.entities.Alarm
 import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.CollectionItem
 import com.livmas.itertable.entities.ListItem
 import com.livmas.itertable.events.AlarmEvent
 import org.greenrobot.eventbus.EventBus
 import java.util.LinkedList
+import kotlin.concurrent.thread
 
 class NotificationReceiver: BroadcastReceiver() {
     private lateinit var db: MainDB
     private lateinit var coll: CollectionItem
+    private lateinit var alarm: Alarm
     private lateinit var item: ListItem
     private lateinit var context: Context
 
@@ -36,16 +39,29 @@ class NotificationReceiver: BroadcastReceiver() {
         db = MainDB.getDB(context!!)
         this.context = context.applicationContext
 
-        val extras = intent?.extras
-        if (extras != null) {
-            coll = extras.getParcelable("collection", CollectionItem::class.java)!!
-        }
+        val extras = intent?.extras ?: return
+        coll = extras.getParcelable("collection", CollectionItem::class.java)!!
+        alarm = extras.getParcelable("alarm_info", Alarm::class.java)!!
         val activeId = ComplexCollectionActivity.activeCollectionId
 
         if (activeId == coll.id)
             EventBus.getDefault().post(AlarmEvent())
         else
             inactivePop()
+
+        thread {
+            refreshDB()
+        }
+    }
+
+    private fun refreshDB() {
+        if (alarm.repeat <= (0).toLong()) {
+            db.getDao().deleteAlarm(alarm)
+        }
+        else {
+            alarm.lastCall = System.currentTimeMillis()
+            db.getDao().updateAlarm(alarm)
+        }
     }
 
     private fun updateNumbers(dataSet: LinkedList<ListItem>) {

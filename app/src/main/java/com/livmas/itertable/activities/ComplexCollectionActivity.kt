@@ -117,24 +117,17 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
 
                 val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
-                val intent = Intent(
-                    this@ComplexCollectionActivity.applicationContext, NotificationReceiver::class.java)
-                    .putExtra("collection", collInfo)
-
-                val pendingIntent = PendingIntent.getBroadcast(
-                    this@ComplexCollectionActivity.applicationContext,
-                    collInfo.id!!,
-                    intent,
-                    PendingIntent.FLAG_MUTABLE
-                )
-
                 var repeat = repeatAlarmCalendar.value
+                val alarm: Alarm
 
                 if (repeat == null || repeat == (0).toLong()) {
                     fragment.binding.tvRepeatTime.text = getString(R.string.nul)
                     repeat = 0
+                    alarm = Alarm(collInfo.id!!, startCalendar.timeInMillis, repeat)
                 }
                 else {
+                    alarm = Alarm(collInfo.id!!, startCalendar.timeInMillis, repeat)
+
                     var minutes: Int
                     val hours: Int
                     with(repeat/1000) {
@@ -154,7 +147,19 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                         }
                         return@thread
                     }
-                    val alarm = Alarm(collInfo.id!!, startCalendar.timeInMillis, repeat)
+
+                    val intent = Intent(
+                        this@ComplexCollectionActivity.applicationContext, NotificationReceiver::class.java)
+                        .putExtra("collection", collInfo)
+                        .putExtra("alarm_info", alarm)
+
+                    val pendingIntent = PendingIntent.getBroadcast(
+                        this@ComplexCollectionActivity.applicationContext,
+                        collInfo.id!!,
+                        intent,
+                        PendingIntent.FLAG_MUTABLE
+                    )
+
                     setAlarm(
                         alarm,
                         alarmManager,
