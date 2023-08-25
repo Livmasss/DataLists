@@ -44,7 +44,7 @@ class AlarmFragment : Fragment() {
                 val myIntent = Intent(context?.applicationContext, NotificationReceiver::class.java)
                 val pendingIntent = PendingIntent.getBroadcast(
                     context?.applicationContext, 1, myIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
                 thread {
                     context?.let { c ->

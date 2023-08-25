@@ -36,8 +36,8 @@ class NotificationReceiver: BroadcastReceiver() {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onReceive(context: Context?, intent: Intent?) {
-        db = MainDB.getDB(context!!)
-        this.context = context.applicationContext
+        this.context = context!!.applicationContext
+        db = MainDB.getDB(this.context)
 
         val extras = intent?.extras ?: return
         coll = extras.getParcelable("collection", CollectionItem::class.java)!!

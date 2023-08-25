@@ -156,4 +156,10 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
     fun updateNumbers() {
         updateRangeNumbers(0, itemCount)
     }
+
+    fun findById(id: Int): CollectionItem? {
+        return dataSet.find {
+            return@find (it.id == id)
+        }
+    }
 }

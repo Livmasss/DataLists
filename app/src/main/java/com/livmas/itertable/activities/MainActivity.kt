@@ -1,5 +1,9 @@
 package com.livmas.itertable.activities
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -9,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
+import com.livmas.itertable.NotificationReceiver
 import com.livmas.itertable.databinding.ActivityCollectionBinding
 import com.livmas.itertable.entities.CollectionItem
 import com.livmas.itertable.fragments.EditItemDialog
@@ -103,7 +108,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fixAlarms() {
-//        for(i in db.getDao().getAllAlarms()) {
-//        }
+        val manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        for(alarm in db.getDao().getAllAlarms()) {
+
+            val collection = adapter.findById(alarm.collectionId) ?: return
+            val intent = Intent(
+                this.applicationContext, NotificationReceiver::class.java)
+                .putExtra("collection", collection)
+                .putExtra("alarm_info", alarm)
+
+            val pendingIntent = PendingIntent.getBroadcast(
+                this.applicationContext,
+                alarm.collectionId,
+                intent,
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+            if (alarm.repeat > (0).toLong()) {
+                alarm.lastCall += alarm.repeat
+            }
+            ComplexCollectionActivity.setAlarm(
+                alarm,
+                manager,
+                pendingIntent
+            )
+        }
     }
 }

@@ -157,7 +157,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                         this@ComplexCollectionActivity.applicationContext,
                         collInfo.id!!,
                         intent,
-                        PendingIntent.FLAG_MUTABLE
+                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                     )
 
                     setAlarm(
