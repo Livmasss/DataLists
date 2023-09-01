@@ -21,7 +21,7 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
     : Adapter<ListItem>,
     RecyclerView.Adapter<ItemAdapter.ItemHolder>(){
 
-    val db = MainDB.getDB(context)
+    private val db = MainDB.getDB(context)
 
     class ItemHolder(view: View) :
         RecyclerView.ViewHolder(view),

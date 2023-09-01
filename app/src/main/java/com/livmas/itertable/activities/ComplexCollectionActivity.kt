@@ -46,6 +46,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
     }
 
     protected lateinit var binding: ActivityComplexCollectionBinding
+    var alarmEditMode = false
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,12 +71,15 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
         }
 
         initRecycler(binding.rvContent)
+
     }
 
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
         activeCollectionId = collInfo.id!!
+
+
     }
 
     override fun onStop() {
@@ -87,9 +91,14 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
     private fun alarmOnClickListener(): View.OnClickListener {
         return View.OnClickListener {
             val fragment = AlarmFragment()
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fcContainer, fragment, "alarm")
-                .commit()
+            if (!alarmEditMode) {
+                alarmEditMode = true
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.fcContainer, fragment, "alarm")
+                    .commit()
+                return@OnClickListener
+            }
+            binding.fcContainer.getFragment<AlarmFragment>().makeVisible()
         }
     }
 
@@ -97,11 +106,12 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
     open fun onAlarmEvent(event: AlarmEvent) {
         adapter.pop()
         Log.i("alarm", "Alarm event occurred.")
+        val fragment = binding.fcContainer.getFragment<AlarmFragment>()
+        fragment.clearDisplay()
     }
 
     override fun setObservers() {
         super.setObservers()
-
         dataModel.apply {
             startAlarmCalendar.observe(this@ComplexCollectionActivity) { startCalendar ->
 

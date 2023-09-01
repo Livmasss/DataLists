@@ -23,7 +23,7 @@ abstract class CollectionActivity: AppCompatActivity() {
     protected val dataModel: DataModel by viewModels()
     protected lateinit var db: MainDB
     protected abstract var adapter: ItemAdapter
-    protected lateinit var collInfo: CollectionItem
+    lateinit var collInfo: CollectionItem
 
     override fun onStop() {
         super.onStop()

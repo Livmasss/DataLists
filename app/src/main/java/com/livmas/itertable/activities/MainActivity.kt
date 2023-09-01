@@ -15,6 +15,7 @@ import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.NotificationReceiver
 import com.livmas.itertable.databinding.ActivityCollectionBinding
+import com.livmas.itertable.entities.Alarm
 import com.livmas.itertable.entities.CollectionItem
 import com.livmas.itertable.fragments.EditItemDialog
 import com.livmas.itertable.fragments.NewCollectionDialog
@@ -26,6 +27,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCollectionBinding
     private lateinit var db: MainDB
     private lateinit var adapter: CollectionAdapter
+
+    companion object {
+        private lateinit var alarms: List<Alarm>
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCollectionBinding.inflate(layoutInflater)
@@ -84,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 val id = db.insertCollectionFromDataModel(dataModel)
                 item.id = id.toInt()
 
-                adapter.openList(item)
+                adapter.openCollection(item)
             }.start()
         }
 
@@ -109,8 +114,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun fixAlarms() {
         val manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        for(alarm in db.getDao().getAllAlarms()) {
+        alarms = db.getDao().getAllAlarms()
 
+        for(alarm in alarms) {
             val collection = adapter.findById(alarm.collectionId) ?: return
             val intent = Intent(
                 this.applicationContext, NotificationReceiver::class.java)

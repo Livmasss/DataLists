@@ -17,9 +17,8 @@ import com.livmas.itertable.activities.collectionActivities.ListActivity
 import com.livmas.itertable.activities.collectionActivities.QueueActivity
 import com.livmas.itertable.activities.collectionActivities.StackActivity
 import com.livmas.itertable.databinding.CollectionItemBinding
-import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.CollectionItem
-import java.util.ArrayList
+import com.livmas.itertable.entities.CollectionType
 import java.util.Collections
 
 class CollectionAdapter(private val context: Context, private val dataModel: DataModel):
@@ -68,7 +67,7 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
         }
 
         holder.getBinding().root.setOnClickListener {
-            openList(dataSet[position])
+            openCollection(dataSet[position])
         }
 
         holder.getBinding().ibEdit.setOnClickListener {
@@ -100,8 +99,8 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
         notifyItemChanged(position)
     }
 
-    fun openList(list: CollectionItem) {
-        val intent = Intent(context, when (list.type) {
+    fun openCollection(coll: CollectionItem) {
+        val intent = Intent(context, when (coll.type) {
             CollectionType.List -> ListActivity::class.java
             CollectionType.Queue -> QueueActivity::class.java
             CollectionType.Cycle -> CycleActivity::class.java
@@ -110,7 +109,7 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
                 ListActivity::class.java}
         }
             )
-        intent.putExtra("collection", CollectionItem(list.id, list.name, list.type, list.number))
+        intent.putExtra("collection", CollectionItem(coll.id, coll.name, coll.type, coll.number))
         startActivity(context, intent, null)
     }
 
