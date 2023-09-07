@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import com.livmas.itertable.MainDB
-import com.livmas.itertable.NotificationReceiver
+import com.livmas.itertable.receivers.NotificationReceiver
 import com.livmas.itertable.R
 import com.livmas.itertable.activities.ComplexCollectionActivity
 import com.livmas.itertable.databinding.FragmentAlarmBinding

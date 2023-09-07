@@ -1,9 +1,5 @@
 package com.livmas.itertable.activities
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -11,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.livmas.itertable.AlarmController
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
-import com.livmas.itertable.NotificationReceiver
 import com.livmas.itertable.databinding.ActivityCollectionBinding
 import com.livmas.itertable.entities.Alarm
 import com.livmas.itertable.entities.CollectionItem
@@ -27,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCollectionBinding
     private lateinit var db: MainDB
     private lateinit var adapter: CollectionAdapter
+    private lateinit var alarmController: AlarmController
 
     companion object {
         private lateinit var alarms: List<Alarm>
@@ -36,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityCollectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        alarmController = AlarmController(this)
         db = MainDB.getDB(this)
         adapter = CollectionAdapter(this, dataModel)
 
@@ -80,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setDialogObserver() {
         lateinit var item: CollectionItem
-        dataModel.newCollection.observe(this) { name ->
+        dataModel.newCollection.observe(this) { _ ->
             dataModel.newCollection.value?.let { coll ->
                 item = coll
                 adapter.add(item) }
@@ -113,30 +111,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fixAlarms() {
-        val manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarms = db.getDao().getAllAlarms()
 
         for(alarm in alarms) {
             val collection = adapter.findById(alarm.collectionId) ?: return
-            val intent = Intent(
-                this.applicationContext, NotificationReceiver::class.java)
-                .putExtra("collection", collection)
-                .putExtra("alarm_info", alarm)
 
-            val pendingIntent = PendingIntent.getBroadcast(
-                this.applicationContext,
-                alarm.collectionId,
-                intent,
-                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            if (alarm.repeat > (0).toLong()) {
+            if (alarm.repeat > (0).toLong())
                 alarm.lastCall += alarm.repeat
-            }
-            ComplexCollectionActivity.setAlarm(
-                alarm,
-                manager,
-                pendingIntent
-            )
+
+            alarmController.create(alarm, collection)
         }
     }
 }

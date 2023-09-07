@@ -1,15 +1,12 @@
 package com.livmas.itertable.activities
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.livmas.itertable.NotificationReceiver
+import com.livmas.itertable.AlarmController
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
 import com.livmas.itertable.entities.Alarm
@@ -22,27 +19,10 @@ import java.util.Calendar
 import kotlin.concurrent.thread
 
 abstract class ComplexCollectionActivity: CollectionActivity() {
+
+    private lateinit var alarmController: AlarmController
     companion object {
         var activeCollectionId = 0
-        fun setAlarm(alarm: Alarm, manager: AlarmManager, pendingIntent: PendingIntent) {
-            alarm.apply {
-                if (repeat == (0).toLong()) {
-                    manager.set(
-                        AlarmManager.RTC_WAKEUP,
-                        alarm.lastCall,
-                        pendingIntent
-                    )
-                }
-                else {
-                    manager.setRepeating(
-                        AlarmManager.RTC_WAKEUP,
-                        lastCall,
-                        repeat,
-                        pendingIntent
-                    )
-                }
-            }
-        }
     }
 
     protected lateinit var binding: ActivityComplexCollectionBinding
@@ -54,6 +34,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
         binding = ActivityComplexCollectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        alarmController = AlarmController(this)
 
         binding.apply {
             tvTitle.text = resources.getString(R.string.colon, collInfo.name)
@@ -71,15 +52,12 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
         }
 
         initRecycler(binding.rvContent)
-
     }
 
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
         activeCollectionId = collInfo.id!!
-
-
     }
 
     override fun onStop() {
@@ -125,8 +103,6 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                         startCalendar.get(Calendar.YEAR))
                 }
 
-                val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-
                 var repeat = repeatAlarmCalendar.value
                 val alarm: Alarm
 
@@ -158,23 +134,7 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
                         return@thread
                     }
 
-                    val intent = Intent(
-                        this@ComplexCollectionActivity.applicationContext, NotificationReceiver::class.java)
-                        .putExtra("collection", collInfo)
-                        .putExtra("alarm_info", alarm)
-
-                    val pendingIntent = PendingIntent.getBroadcast(
-                        this@ComplexCollectionActivity.applicationContext,
-                        collInfo.id!!,
-                        intent,
-                        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-                    )
-
-                    setAlarm(
-                        alarm,
-                        alarmManager,
-                        pendingIntent)
-
+                    alarmController.create(alarm, collInfo)
                     db.getDao().insertAlarm(alarm)
                 }
             }
