@@ -1,26 +1,25 @@
 package com.livmas.itertable.fragments
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
+import com.livmas.itertable.AlarmController
 import com.livmas.itertable.MainDB
-import com.livmas.itertable.receivers.NotificationReceiver
 import com.livmas.itertable.R
 import com.livmas.itertable.activities.ComplexCollectionActivity
 import com.livmas.itertable.databinding.FragmentAlarmBinding
 import com.livmas.itertable.entities.Alarm
 import java.util.Calendar
+import java.util.TimeZone
 import kotlin.concurrent.thread
 
 
 class AlarmFragment : Fragment() {
     lateinit var binding: FragmentAlarmBinding
+    lateinit var controller: AlarmController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,17 +57,9 @@ class AlarmFragment : Fragment() {
     private fun cancelListener(): View.OnClickListener {
         return View.OnClickListener {
             clearDisplay()
+            controller = AlarmController(requireContext())
 
-            val alarmManager = context?.getSystemService<AlarmManager>()
-
-            val intent = Intent(context?.applicationContext, NotificationReceiver::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(
-                context?.applicationContext,
-                1,
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-
+            controller.cancel(ComplexCollectionActivity.activeCollectionId)
             thread {
                 context?.let { c ->
                     MainDB.getDB(c).getDao()
@@ -78,8 +69,6 @@ class AlarmFragment : Fragment() {
                                 0,
                                 0,
                             ))}
-
-                alarmManager!!.cancel(pendingIntent)
             }
         }
     }
@@ -103,10 +92,12 @@ class AlarmFragment : Fragment() {
             binding.apply {
                 alarm.apply {
                     if (repeat > (0).toLong()) {
-                        val rCalendar = Calendar.getInstance()
+                        val rCalendar = Calendar.getInstance(TimeZone.getTimeZone("MSK"))
                         rCalendar.timeInMillis = repeat
 
                         activity.runOnUiThread {
+                            Log.d("alarm", getString(R.string.time_template,
+                                rCalendar.get(Calendar.HOUR_OF_DAY), rCalendar.get(Calendar.MINUTE)))
                             tvRepeatTime.text = getString(R.string.time_template,
                                 rCalendar.get(Calendar.HOUR_OF_DAY), rCalendar.get(Calendar.MINUTE))
                         }
