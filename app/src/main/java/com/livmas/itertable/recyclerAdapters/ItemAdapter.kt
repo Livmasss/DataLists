@@ -65,6 +65,9 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
     override fun remove(position: Int) {
         dataSet.removeAt(position)
     }
+    fun clear() {
+        dataSet.clear()
+    }
 
     override fun notifiedRemove(position: Int) {
         remove(position)

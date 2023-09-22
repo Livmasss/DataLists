@@ -63,12 +63,14 @@ abstract class CollectionActivity: AppCompatActivity() {
 
     private fun initList() {
         Thread {
+            adapter.clear()
             val data = db.getDao().getCollItems(collInfo.id!!)
             data.forEach { item ->
                 adapter.apply {
                     add(item)
                 }
             }
+            adapter.notifyDataSetChanged()
         }.start()
     }
 
