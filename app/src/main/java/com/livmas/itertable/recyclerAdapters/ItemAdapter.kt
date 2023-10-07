@@ -64,6 +64,7 @@ abstract class ItemAdapter(
         return ItemHolder(view)
     }
 
+
     override fun getItemCount(): Int {
         return dataSet.size
     }
