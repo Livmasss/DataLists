@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.livmas.itertable.AlarmController
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
+import com.livmas.itertable.activities.CollectionActivity
 import com.livmas.itertable.activities.ComplexCollectionActivity
 import com.livmas.itertable.databinding.FragmentAlarmBinding
 import com.livmas.itertable.entities.Alarm
@@ -59,13 +60,17 @@ class AlarmFragment : Fragment() {
             clearDisplay()
             controller = AlarmController(requireContext())
 
-            controller.cancel(ComplexCollectionActivity.activeCollectionId)
+            if (CollectionActivity.activeCollInfo == null || CollectionActivity.activeCollInfo!!.id == null)
+                return@OnClickListener
+            val id: Int = CollectionActivity.activeCollInfo!!.id!!
+
+            controller.cancel(id)
             thread {
                 context?.let { c ->
                     MainDB.getDB(c).getDao()
                         .deleteAlarm(
                             Alarm(
-                                ComplexCollectionActivity.activeCollectionId,
+                                id,
                                 0,
                                 0,
                             ))}

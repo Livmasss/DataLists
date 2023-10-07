@@ -15,16 +15,19 @@ data class ListItem(
     @ColumnInfo(name = "master_id")
     val masterId: Int,
     @ColumnInfo(name = "number", defaultValue = "0")
-    var number: Int
+    var number: Int,
+    @ColumnInfo(name = "status")
+    var status: Boolean?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString().orEmpty(),
         parcel.readInt(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readBoolean()
     )
     constructor(): this(
-        0, "", 0, 0)
+        0, "", 0, 0, null)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)

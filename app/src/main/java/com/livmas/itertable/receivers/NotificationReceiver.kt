@@ -18,7 +18,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.livmas.itertable.AlarmController
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
-import com.livmas.itertable.activities.ComplexCollectionActivity
+import com.livmas.itertable.activities.CollectionActivity
 import com.livmas.itertable.entities.Alarm
 import com.livmas.itertable.entities.CollectionItem
 import com.livmas.itertable.entities.CollectionType
@@ -40,7 +40,6 @@ class NotificationReceiver: BroadcastReceiver() {
     private val channelId = "DataSets Channel"
     private val tag = "AlarmChannel"
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.i(tag, "Alarm received")
         if (context == null) {
@@ -77,7 +76,9 @@ class NotificationReceiver: BroadcastReceiver() {
             alarm = it
         }
 
-        val activeId = ComplexCollectionActivity.activeCollectionId
+        if (CollectionActivity.activeCollInfo == null || CollectionActivity.activeCollInfo!!.id == null)
+            return
+        val activeId = CollectionActivity.activeCollInfo!!.id!!
         if (activeId == coll.id)
             EventBus.getDefault().post(AlarmEvent())
         else
@@ -114,7 +115,6 @@ class NotificationReceiver: BroadcastReceiver() {
         Log.d(tag, "Alarm of collection ${coll.id} relaunched")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun inactivePop() {
          Thread {
             val dataSet = LinkedList(coll.id?.let { db.getDao().getCollItems(it) }.orEmpty())
@@ -168,7 +168,6 @@ class NotificationReceiver: BroadcastReceiver() {
     }
 
     @SuppressLint("MissingPermission")
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun sendNotification() {
         val contentText = context.resources.getString(R.string.pop_notification, coll.name)
         createChannel()
@@ -186,7 +185,6 @@ class NotificationReceiver: BroadcastReceiver() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val importance = NotificationManager.IMPORTANCE_DEFAULT

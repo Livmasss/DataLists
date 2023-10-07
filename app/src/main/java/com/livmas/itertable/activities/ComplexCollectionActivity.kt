@@ -1,11 +1,9 @@
 package com.livmas.itertable.activities
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.livmas.itertable.AlarmController
 import com.livmas.itertable.R
 import com.livmas.itertable.databinding.ActivityComplexCollectionBinding
@@ -21,14 +19,10 @@ import kotlin.concurrent.thread
 abstract class ComplexCollectionActivity: CollectionActivity() {
 
     private lateinit var alarmController: AlarmController
-    companion object {
-        var activeCollectionId = 0
-    }
 
     protected lateinit var binding: ActivityComplexCollectionBinding
     var alarmEditMode = false
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityComplexCollectionBinding.inflate(layoutInflater)
@@ -57,13 +51,11 @@ abstract class ComplexCollectionActivity: CollectionActivity() {
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
-        activeCollectionId = collInfo.id!!
     }
 
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
-        activeCollectionId = 0
     }
 
     private fun alarmOnClickListener(): View.OnClickListener {

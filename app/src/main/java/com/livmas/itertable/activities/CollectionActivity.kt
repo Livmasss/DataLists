@@ -1,9 +1,7 @@
 package com.livmas.itertable.activities
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -12,25 +10,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.entities.CollectionItem
+import com.livmas.itertable.entities.CollectionType
+import com.livmas.itertable.entities.ListItem
 import com.livmas.itertable.fragments.EditItemDialog
 import com.livmas.itertable.fragments.NewListDialog
-import com.livmas.itertable.entities.ListItem
 import com.livmas.itertable.itemTouchCallbacks.ItemTouchCallback
 import com.livmas.itertable.recyclerAdapters.ItemAdapter
 
 abstract class CollectionActivity: AppCompatActivity() {
+    companion object {
+        var activeCollInfo: CollectionItem? = null
+    }
 
     protected val dataModel: DataModel by viewModels()
     protected lateinit var db: MainDB
     protected abstract var adapter: ItemAdapter
     lateinit var collInfo: CollectionItem
 
-    override fun onStop() {
-        super.onStop()
-        adapter.dbUpdate()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,10 +36,22 @@ abstract class CollectionActivity: AppCompatActivity() {
         setObservers()
     }
 
+    override fun onStart() {
+        super.onStart()
+        activeCollInfo = collInfo
+    }
+
     override fun onResume() {
         super.onResume()
         initList()
     }
+
+    override fun onStop() {
+        super.onStop()
+        activeCollInfo = null
+        adapter.dbUpdate()
+    }
+
 
     protected fun initRecycler(rv: RecyclerView) {
         val context = this
@@ -70,7 +78,9 @@ abstract class CollectionActivity: AppCompatActivity() {
                     add(item)
                 }
             }
-            adapter.notifyDataSetChanged()
+            runOnUiThread {
+                adapter.notifyDataSetChanged()
+            }
         }.start()
     }
 
@@ -82,7 +92,10 @@ abstract class CollectionActivity: AppCompatActivity() {
     open fun setObservers() {
         dataModel.newListName.observe(this) { name ->
             val item = collInfo.id?.let { masterId ->
-                ListItem(null, name, masterId, adapter.itemCount + 1)
+                if (collInfo.type == CollectionType.CheckList)
+                    ListItem(null, name, masterId, adapter.itemCount + 1, false)
+                else
+                    ListItem(null, name, masterId, adapter.itemCount + 1, null)
             }
 
             if (item != null) {

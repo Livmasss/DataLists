@@ -10,16 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
+import com.livmas.itertable.activities.CollectionActivity
 import com.livmas.itertable.databinding.ListItemBinding
+import com.livmas.itertable.entities.CollectionType
 import com.livmas.itertable.entities.ListItem
 import java.lang.Integer.max
 import java.lang.Integer.min
 import java.util.Collections
 import java.util.LinkedList
 
-abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private val context: Context, val dataModel: DataModel)
-    : Adapter<ListItem>,
-    RecyclerView.Adapter<ItemAdapter.ItemHolder>(){
+abstract class ItemAdapter(
+        protected val dataSet: LinkedList<ListItem>,
+        private val context: Context,
+        val dataModel: DataModel
+    ) : Adapter<ListItem>, RecyclerView.Adapter<ItemAdapter.ItemHolder>(){
 
     private val db = MainDB.getDB(context)
 
@@ -32,6 +36,14 @@ abstract class ItemAdapter(protected val dataSet: LinkedList<ListItem>, private 
             binding.apply {
                 tvNumber.text = item.number.toString()
                 tvName.text = item.name
+
+                if (CollectionActivity.activeCollInfo != null &&
+                        CollectionActivity.activeCollInfo!!.type == CollectionType.CheckList) {
+                    cbStatus.visibility = View.VISIBLE
+                    cbStatus.isChecked = (item.status == true)
+                }
+                else
+                    cbStatus.visibility = View.GONE
             }
         }
 

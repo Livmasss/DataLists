@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.livmas.itertable.DataModel
 import com.livmas.itertable.MainDB
 import com.livmas.itertable.R
+import com.livmas.itertable.activities.collectionActivities.CheckedListActivity
 import com.livmas.itertable.activities.collectionActivities.CycleActivity
 import com.livmas.itertable.activities.collectionActivities.ListActivity
 import com.livmas.itertable.activities.collectionActivities.QueueActivity
@@ -105,8 +106,7 @@ class CollectionAdapter(private val context: Context, private val dataModel: Dat
             CollectionType.Queue -> QueueActivity::class.java
             CollectionType.Cycle -> CycleActivity::class.java
             CollectionType.Stack -> StackActivity::class.java
-            else -> {
-                ListActivity::class.java}
+            CollectionType.CheckList -> CheckedListActivity::class.java
         }
             )
         intent.putExtra("collection", CollectionItem(coll.id, coll.name, coll.type, coll.number))
