@@ -25,6 +25,13 @@ abstract class ItemAdapter(
         val dataModel: DataModel
     ) : Adapter<ListItem>, RecyclerView.Adapter<ItemAdapter.ItemHolder>(){
 
+    companion object {
+        private fun isCheckList(): Boolean {
+            return CollectionActivity.activeCollInfo != null &&
+                    CollectionActivity.activeCollInfo!!.type == CollectionType.CheckList
+        }
+    }
+
     private val db = MainDB.getDB(context)
 
     class ItemHolder(view: View) :
@@ -37,8 +44,7 @@ abstract class ItemAdapter(
                 tvNumber.text = item.number.toString()
                 tvName.text = item.name
 
-                if (CollectionActivity.activeCollInfo != null &&
-                        CollectionActivity.activeCollInfo!!.type == CollectionType.CheckList) {
+                if (isCheckList()) {
                     cbStatus.visibility = View.VISIBLE
                     cbStatus.isChecked = (item.status == true)
                 }
@@ -49,6 +55,43 @@ abstract class ItemAdapter(
 
         override fun getBinding(): ListItemBinding {
             return binding
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.list_item, parent, false)
+        return ItemHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return dataSet.size
+    }
+
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        holder.bind(dataSet[position], position)
+        holder.getBinding().ibDelete.setOnClickListener {
+            val dialog = AlertDialog.Builder(context)
+                .setMessage(R.string.delete_message)
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    onDeleteClickListener(position)
+                }
+                .create()
+
+            dialog.show()
+        }
+        holder.getBinding().ibEdit.setOnClickListener {
+            dataModel.editItemIndex.value = position
+        }
+
+
+        if (!isCheckList())
+            return
+        // Executed only if current collection - checklist
+        val cbStatus = holder.getBinding().cbStatus
+        cbStatus.setOnClickListener {
+            dataSet[position].status = cbStatus.isChecked
         }
     }
 
@@ -89,15 +132,6 @@ abstract class ItemAdapter(
         notifyItemRangeChanged(position, itemCount)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.list_item, parent, false)
-        return ItemHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        return dataSet.size
-    }
 
     override fun setItemData(position: Int, name: String) {
         dataSet[position].name = name
@@ -116,24 +150,6 @@ abstract class ItemAdapter(
 
         updateRangeNumbers(min, max+1)
         notifyItemMoved(from, to)
-    }
-
-    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        holder.bind(dataSet[position], position)
-        holder.getBinding().ibDelete.setOnClickListener {
-            val dialog = AlertDialog.Builder(context)
-                .setMessage(R.string.delete_message)
-                .setNegativeButton(R.string.cancel) { _, _ -> }
-                .setPositiveButton(R.string.confirm) { _, _ ->
-                    onDeleteClickListener(position)
-                }
-                .create()
-
-            dialog.show()
-        }
-        holder.getBinding().ibEdit.setOnClickListener {
-            dataModel.editItemIndex.value = position
-        }
     }
 
     open fun updateNumber(position: Int) {
@@ -162,4 +178,5 @@ abstract class ItemAdapter(
         }
         return false
     }
+
 }
