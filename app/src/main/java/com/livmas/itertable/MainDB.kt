@@ -1,18 +1,16 @@
 package com.livmas.itertable
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.livmas.itertable.entities.Alarm
 import com.livmas.itertable.entities.CollectionItem
 import com.livmas.itertable.entities.ListItem
-import java.lang.IllegalStateException
 
 @Database(entities = [CollectionItem::class, ListItem::class, Alarm::class],
     version = 4,
-    autoMigrations = [AutoMigration(3, 4)])
+    autoMigrations = [])
 abstract class MainDB: RoomDatabase() {
     abstract fun getDao(): Dao
     companion object {
